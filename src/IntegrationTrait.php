@@ -315,7 +315,7 @@ trait IntegrationTrait
         $outputDir = 'tests/logs';
 
         if (! is_dir($outputDir)) {
-            mkdir($outputDir, null, true);
+            mkdir($outputDir, 0777, true);
 
             file_put_contents("{$outputDir}/output.txt", $this->content());
         }
