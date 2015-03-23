@@ -52,11 +52,11 @@ trait IntegrationTrait
      */
     protected function prepareUrl($url)
     {
-        if (starts_with($url, '/')) {
+        if (Str::startsWith($url, '/')) {
             $url = substr($url, 1);
         }
 
-        if (! starts_with($url, 'http')) {
+        if (! Str::startsWith($url, 'http')) {
             $url = sprintf("%s/%s", $this->baseUrl(), $url);
         }
 
@@ -344,7 +344,7 @@ trait IntegrationTrait
      */
     public function __call($method, $args)
     {
-        if (starts_with($method, 'and')) {
+        if (Str::startsWith($method, 'and')) {
             $method = strtolower(substr($method, 3));
 
             if (method_exists($this, $method)) {
