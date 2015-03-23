@@ -1,6 +1,6 @@
 # Integrated
 
-> Please note: while all the tests are returning green, this package is still early in development. If you use it and come across any quirks, please do open an issue or PR to let me know.
+Simple, intuitive integration testing with PHPUnit. For the projects where you're less interested in fancy tools and discussions with the business, and more concerned with just ensuring that the dang thing works. :) 
 
 ## Usage
 
