@@ -285,7 +285,7 @@ trait IntegrationTrait
      */
     public function seeInDatabase($table, array $data)
     {
-        $count = $this->app['db']->table($table)->where($data)->count();
+        $count = $this->seeRowsWereReturned($table, $data);
 
         $message = sprintf(
             "Didn't see row in the '%s' table that matched the attributes '%s'.",

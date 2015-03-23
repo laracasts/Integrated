@@ -215,7 +215,31 @@ $this->visit('/tasks')
 
 When calling `verifyInDatabase`, as the two arguments, provide the name of the table you're interested in, and an array of any attributes for the query.
 
-> Note: while only temporary, this method only works with the Laravel extension at the moment. This will be resolved in a future commit.
+**Important:** If using the Laravel-specific extension, this package will use your existing database configuration. There's nothing more for you to do. However, if using the Goutte extension for a general PHP project, you'll need to create a `integrated.json` file in your project root, and then specify your database connection string. Here's a couple examples:
+
+** SQLite Config**
+
+```js
+{
+    "pdo": {
+        "connection": "sqlite:storage/database.sqlite",
+        "username": "",
+        "password": ""
+    }
+}
+```
+
+** MySQL Config**
+
+```js
+{
+    "pdo": {
+        "connection": "mysql:host=localhost;dbname=myDatabase"
+        "username": "homestead",
+        "password": "secret"
+    }
+}
+```
 
 ### TestDummy
 

@@ -89,6 +89,18 @@ abstract class Laravel extends TestCase implements Emulator
     }
 
     /**
+     * Get the number of rows that match the given condition.
+     *
+     * @param  string $table
+     * @param  array $data
+     * @return integer
+     */
+    protected function seeRowsWereReturned($table, $data)
+    {
+        return $this->app['db']->table($table)->where($data)->count();
+    }
+
+    /**
      * Get the content from the reponse.
      *
      * @return string

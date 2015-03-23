@@ -2,6 +2,8 @@
 
 namespace Laracasts\Integrated\Extensions;
 
+use Laracasts\Integrated\Database\Connection;
+use Laracasts\Integrated\Database\Adapter;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Emulator;
 use Goutte\Client;
@@ -16,6 +18,13 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      * @var Client
      */
     protected $client;
+
+    /**
+     * The database adapter instance.
+     *
+     * @var Adapter
+     */
+    protected $db;
 
     /**
      * Get the base url for all requests.
@@ -78,6 +87,42 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
         }
 
         return $this->client;
+    }
+
+    /**
+     * Get the number of rows that match the given condition.
+     *
+     * @param  string $table
+     * @param  array $data
+     * @return integer
+     */
+    protected function seeRowsWereReturned($table, $data)
+    {
+        return $this->getDbAdapter()->table($table)->whereExists($data);
+    }
+
+    /**
+     * Get the adapter to the database.
+     *
+     * @return Adapter
+     */
+    protected function getDbAdapter()
+    {
+        if (! $this->db) {
+            $this->db = new Adapter(new Connection($this->getDbConfig()));
+        }
+
+        return $this->db;
+    }
+
+    /**
+     * Fetch the user-provided PDO configuration.
+     *
+     * @return object
+     */
+    protected function getDbConfig()
+    {
+        return json_decode(file_get_contents('integrated.json'), true)['pdo'];
     }
 
     /**
