@@ -1,6 +1,6 @@
 # Integrated
 
-> Please note this is still early in development.
+> Please note: while all the tests are returning green, this package is still early in development. If you use it and come across any quirks, please do open an issue or PR to let me know.
 
 ## Usage
 
