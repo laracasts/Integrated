@@ -87,16 +87,14 @@ trait IntegrationTrait
     }
 
     /**
-     * Convenience method that defers to onPage.
+     * Assert that the current page matches a uri.
      *
      * @param  string $uri
      * @return self
      */
     public function seePageIs($uri)
     {
-        $uri = $this->prepareUrl($uri);
-
-        $this->assertPageLoaded($uri);
+        $this->assertPageLoaded($uri = $this->prepareUrl($uri));
 
         $message = "Expected to be on the page, {$uri}, but wasn't.";
 
@@ -106,7 +104,7 @@ trait IntegrationTrait
     }
 
     /**
-     * Assert that the current page is...
+     * Alias that defers to seePageIs.
      *
      * @param  string $page
      * @return self
@@ -128,13 +126,14 @@ trait IntegrationTrait
         $this->assertFilterProducedResults($element);
 
         $element = str_replace('#', '', $element);
+
         $this->inputs[$element] = $text;
 
         return $this;
     }
 
     /**
-     * Conveience method that defers to type method.
+     * Alias that defers to type method.
      *
      * @param  string $text
      * @param  string $element
@@ -297,7 +296,7 @@ trait IntegrationTrait
     }
 
     /**
-     * Convenience method that defers to seeInDatabase.
+     * Alias that defers to seeInDatabase.
      *
      * @param  string $table
      * @param  array  $data
