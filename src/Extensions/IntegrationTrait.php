@@ -6,6 +6,7 @@ use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Str;
 use InvalidArgumentException;
+use BadMethodCallException;
 
 trait IntegrationTrait
 {
@@ -353,6 +354,6 @@ trait IntegrationTrait
             }
         }
 
-        throw new Exception("The '{$method}' method does not exist.");
+        throw new BadMethodCallException("The '{$method}' method does not exist.");
     }
 }
