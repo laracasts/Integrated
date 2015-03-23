@@ -37,6 +37,12 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
             return $this->baseUrl;
         }
 
+        $config = $this->getPackageConfig();
+
+        if (isset($config['baseUrl'])) {
+            return $config['baseUrl'];
+        }
+
         return 'http://localhost:8888';
     }
 
@@ -111,20 +117,12 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
     protected function getDbAdapter()
     {
         if (! $this->db) {
-            $this->db = new Adapter(new Connection($this->getDbConfig()));
+            $connection = new Connection($this->getPackageConfig()['pdo']);
+
+            $this->db = new Adapter($connection);
         }
 
         return $this->db;
-    }
-
-    /**
-     * Fetch the user-provided PDO configuration.
-     *
-     * @return object
-     */
-    protected function getDbConfig()
-    {
-        return json_decode(file_get_contents('integrated.json'), true)['pdo'];
     }
 
     /**

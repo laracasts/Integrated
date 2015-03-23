@@ -32,6 +32,13 @@ trait IntegrationTrait
     protected $inputs = [];
 
     /**
+     * The user-provided package configuration.
+     *
+     * @var array
+     */
+    protected $packageConfig;
+
+    /**
      * Make a GET request to the given uri.
      *
      * @param  string $url
@@ -346,6 +353,20 @@ trait IntegrationTrait
 
             file_put_contents("{$outputDir}/output.txt", $this->content());
         }
+    }
+
+    /**
+     * Fetch the user-provided package configuration.
+     *
+     * @return object
+     */
+    protected function getPackageConfig()
+    {
+        if ( ! $this->packageConfig) {
+            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        }
+
+        return $this->packageConfig;
     }
 
     /**

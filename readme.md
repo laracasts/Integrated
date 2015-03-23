@@ -28,11 +28,19 @@ class ExampleTest extends IntegrationTest {}
 
 That should mostly do it!
 
-If you're using the Goutte extension, you'll of course need to boot up a server. By default, this package will assume a base url of "http://localhost:8888". Should need to modify this (likely the case), set a `$baseUrl` on your unit test class (or a parent class), like so:
+If you're using the Goutte extension, you'll of course need to boot up a server. By default, this package will assume a base url of "http://localhost:8888". Should need to modify this (likely the case), either set a `$baseUrl` on your unit test class (or a parent class)...
 
 ```php
 class ExampleTest extends IntegrationTest {
   protected $baseUrl = 'http://localhost:1234';
+}
+```
+
+...or set a `baseUrl` property in a `integrated.json` file in your project root.
+
+```js
+{
+    "baseUrl": "http://localhost:1234"
 }
 ```
 
