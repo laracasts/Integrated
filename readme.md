@@ -30,7 +30,7 @@ That should mostly do it!
 
 If you're using the Goutte extension, you'll of course need to boot up a server. By default, this package will assume a base url of "http://localhost:8888". Should need to modify this (likely the case), set a `$baseUrl` on your unit test class (or a parent class), like so:
 
-```
+```php
 class ExampleTest extends IntegrationTest {
   protected $baseUrl = 'http://localhost:1234';
 }
@@ -96,11 +96,126 @@ class ExampleTest extends IntegrationTest
 }
 ```
 
-### Integration Methods
+### Step 4: Integration Methods
+
+If you'd like to dig into the API examples from above a bit more, here is what each method call accomplishes.
 
 #### `visit($uri)`
 
-This will perform a `GET` request to the given $uri, while also triggering an assertion to guarantee that a 200 status code was returned.
+This will perform a `GET` request to the given `$uri`, while also triggering an assertion to guarantee that a 200 status code was returned.
+
+```php
+$this->visit('/page');
+```
+
+#### `see($text)`
+
+To verify that the current page contains the given text, you'll want to use the `see` method.
+
+```php
+$this->visit('/page')
+     ->see('Hello World');
+```
+
+> Tip: The word "and" may be prepended to any method call to help with readability. As such, if you wish, you may write: `$this->visit('/page')->andSee('Hello World');`.
+
+#### `click($linkText)`
+
+To simulate the behavior of clicking a link on the page, the `click` method is your friend.
+
+```php
+$this->visit('/page')
+     ->click('Follow Me');
+```
+
+Behind the scenes, this package will determine that destination of the link (the "href"), and make a new "GET" request, accordingly.
+
+
+#### `seePageIs($uri)` and `onPage($uri)`
+
+In many situations, it can prove useful to make an assertion against the current url.
+
+```php
+$this->visit('/page')
+     ->click('Follow Me')
+     ->seePageIs('/next-page');
+```
+
+Alternatively, if it offers better readability, you may use the `onPage` method instead. Both are equivalent in functionality. This is especially true when it follows a `see` assertion call.
+
+```php
+$this->visit('/page')
+     ->click('Follow Me')
+     ->andSee('You are on the next page')
+     ->onPage('/next-page');
+```
+
+#### `type($text, $selector)` or `fill($text, $selector)`
+
+If you need to type something into an input field, one option is to use the `type` method, like so:
+
+```php
+$this->visit('search')
+     ->type('Total Recall', '#q');
+```
+
+Simply provide the value for the input, and a CSS selector for us to hunt down the input that you're looking for. You may pass an id, element name, or an input with the given "name" attribute. The `fill` method is an alias that does the same thing.
+
+#### `press($submitText)`
+
+Not to be confused with `click`, the `press` method is used to submit a form with a submit button that has the given text.
+
+```php
+$this->visit('search')
+     ->type('Total Recall', '#q')
+     ->press('Search Now');
+```
+
+When called, this package will handle the process of submitting the form, and following any applicable redirects. This means, we could combine some of previous examples to form a full integration test.
+
+```php
+$this->visit('/search')
+     ->type('Total Recall', '#q')
+     ->press('Search Now')
+     ->andSee('Search results for "Total Recall"')
+     ->onPage('/search/results');
+```
+
+#### `submitForm($submitText, $formData)`
+
+For situations where multiple form inputs must be filled out, you might choose to forego multiple `type()` calls, and instead use the `submitForm` method.
+
+```php
+$this->visit('/search')
+     ->submitForm('Search Now', ['q' => 'Total Recall']);
+```
+
+This method offers a more compact option, which will both populate and submit the form.
+
+Take special note of the second argument,  which is for the form data. You'll want to pass an associative array, where each key refers to the "name" of an input (not the element name, but the "name" attribute). As such, this test would satisfy the following form:
+
+```html
+<form method="POST" action="/search/results">
+  <input type="text" name="q" placeholder="Search for something...">
+  <input type="submit" value="Search Now">
+</form>
+```
+
+#### `seeInDatabase($table, $data)` or `verifyInDatabase($table, $data)`
+
+For situations when you want to peek inside the database to verify that a certain record/row exists, `seeInDatabase` or its alias `verifyInDatabase` will do the trick nicely.
+
+```php
+$data = ['description' => 'Finish documentation'];
+
+$this->visit('/tasks')
+     ->submitForm('Create Task', $data)
+     ->verifyInDatabase('tasks', $data);
+```
+
+When calling `verifyInDatabase`, as the two arguments, provide the name of the table you're interested in, and an array of any attributes for the query.
+
+> Note: while only temporary, this method only works with the Laravel extension at the moment. This will be resolved in a future commit.
 
 ### FAQ
 
