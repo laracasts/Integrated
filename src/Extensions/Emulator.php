@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Integrated;
+namespace Laracasts\Integrated\Extensions;
 
 interface Emulator
 {

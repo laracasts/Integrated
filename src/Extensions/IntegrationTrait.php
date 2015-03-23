@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Integrated;
+namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Symfony\Component\DomCrawler\Form;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Integrated;
+namespace Laracasts\Integrated\Extension;
 
 use Symfony\Component\DomCrawler\Form;
 use Goutte\Client;
