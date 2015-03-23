@@ -4,6 +4,7 @@ namespace Laracasts\Integrated;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Symfony\Component\DomCrawler\Form;
+use InvalidArgumentException;
 
 trait IntegrationTrait
 {
