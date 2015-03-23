@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extension;
 
 use Symfony\Component\DomCrawler\Form;
+use Laracasts\Integration\Emulator;
 use Goutte\Client;
 
 abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
