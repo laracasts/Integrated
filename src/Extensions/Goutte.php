@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Integrated\Extension;
+namespace Laracasts\Integrated\Extensions;
 
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Emulator;
