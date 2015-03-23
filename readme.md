@@ -119,7 +119,7 @@ $this->visit('/page')
 
 > Tip: The word "and" may be prepended to any method call to help with readability. As such, if you wish, you may write: `$this->visit('/page')->andSee('Hello World');`.
 
-#### `click($linkText)`
+#### `click($linkText)` or `follow($linkText)`
 
 To simulate the behavior of clicking a link on the page, the `click` method is your friend.
 
@@ -128,7 +128,7 @@ $this->visit('/page')
      ->click('Follow Me');
 ```
 
-Behind the scenes, this package will determine that destination of the link (the "href"), and make a new "GET" request, accordingly.
+Behind the scenes, this package will determine that destination of the link (the "href"), and make a new "GET" request, accordingly. Alternatively, you may use the `follow()` method. Same thing.
 
 
 #### `seePageIs($uri)` and `onPage($uri)`
