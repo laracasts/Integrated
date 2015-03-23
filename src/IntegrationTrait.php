@@ -157,7 +157,7 @@ trait IntegrationTrait
     }
 
     /**
-     * Get the form from the DOM.
+     * Fill out the form, using the given data.
      *
      * @param  string $buttonText
      * @param  array  $formData
@@ -165,18 +165,34 @@ trait IntegrationTrait
      */
     protected function fillForm($buttonText, $formData = [])
     {
+        if ( ! is_string($buttonText)) {
+            $formData = $buttonText;
+            $buttonText = null;
+        }
+
+        return $this->getForm($buttonText)->setValues($formData);
+    }
+
+    /**
+     * Get the form from the DOM.
+     *
+     * @param  mixed $buttonText
+     * @throws InvalidArgumentException
+     * @return Form
+     */
+    protected function getForm($buttonText = null)
+    {
         // If the first argument isn't a string, that means
         // the user wants us to auto-find the form.
 
         try {
-            if (! is_string($buttonText)) {
-                $formData = $buttonText;
-
-                $form = $this->crawler->filter('form')->form();
-            } else {
-                $form = $this->crawler->selectButton($buttonText)->form();
+            if ($buttonText) {
+                return $this->crawler->selectButton($buttonText)->form();
             }
+
+            return $this->crawler->filter('form')->form();
         } catch (InvalidArgumentException $e) {
+
             // We'll catch the exception, in order to provide a
             // more readable failure message for the user.
 
@@ -184,8 +200,6 @@ trait IntegrationTrait
                 "Couldn't find a form that contains a button with text '{$buttonText}'."
             );
         }
-
-        return $form->setValues($formData);
     }
 
     /**
