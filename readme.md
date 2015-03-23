@@ -217,6 +217,26 @@ When calling `verifyInDatabase`, as the two arguments, provide the name of the t
 
 > Note: while only temporary, this method only works with the Laravel extension at the moment. This will be resolved in a future commit.
 
+### TestDummy
+
+To help with RAD, this package includes the "laracasts/testdummy" package out of the box. For integration tests that hit a database, you'll likely want this anyways. Refer to the [TestDummy](https://github.com/laracasts/TestDummy) documentation for a full overview, but, in short, it gives you a very simple way to build up and/or persist your entities (like your Eloquent models), for the purposes of testing.
+
+Think of it as your way of saying, "*Well, assuming that I have these records in my database table*, when I yadayada".
+
+```php
+use Laracasts\TestDummy\Factory as TestDummy;
+
+// ...
+
+/** @test */
+function it_shows_posts()
+{
+  TestDummy::create('App\Post', ['title' => 'Example Post']);
+
+  $this->visit('/posts')->andSee('Example Post');
+}
+```
+
 ### FAQ
 
 #### Can I test JavaScript with this method?
