@@ -217,7 +217,7 @@ When calling `verifyInDatabase`, as the two arguments, provide the name of the t
 
 **Important:** If using the Laravel-specific extension, this package will use your existing database configuration. There's nothing more for you to do. However, if using the Goutte extension for a general PHP project, you'll need to create a `integrated.json` file in your project root, and then specify your database connection string. Here's a couple examples:
 
-** SQLite Config**
+**SQLite Config**
 
 ```js
 {
@@ -229,7 +229,7 @@ When calling `verifyInDatabase`, as the two arguments, provide the name of the t
 }
 ```
 
-** MySQL Config**
+**MySQL Config**
 
 ```js
 {
