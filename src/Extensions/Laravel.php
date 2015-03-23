@@ -4,7 +4,7 @@ namespace Laracasts\Integrated\Extensions;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
-use Laracasts\Integration\Emulator;
+use Laracasts\Integrated\Emulator;
 use TestCase;
 
 abstract class Laravel extends TestCase implements Emulator
