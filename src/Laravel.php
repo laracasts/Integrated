@@ -21,6 +21,22 @@ abstract class Laravel extends TestCase implements Emulator
     }
 
     /**
+     * Submit a form on the page.
+     *
+     * @param  string $buttonText
+     * @param  array  $formData
+     * @return self
+     */
+    public function submitForm($buttonText, $formData = [])
+    {
+        $this->makeRequestUsingForm(
+            $this->fillForm($buttonText, $formData)
+        );
+
+        return $this;
+    }
+
+    /**
      * Call a URI in the application.
      *
      * @param  string $requestType
@@ -54,22 +70,6 @@ abstract class Laravel extends TestCase implements Emulator
         while ($this->response->isRedirect()) {
             $this->makeRequest('GET', $this->response->getTargetUrl());
         }
-
-        return $this;
-    }
-
-    /**
-     * Submit a form on the page.
-     *
-     * @param  string $buttonText
-     * @param  array  $formData
-     * @return self
-     */
-    public function submitForm($buttonText, $formData = [])
-    {
-        $this->makeRequestUsingForm(
-            $this->fillForm($buttonText, $formData)
-        );
 
         return $this;
     }

@@ -21,30 +21,13 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      *
      * @return string
      */
-    protected function baseUrl()
+    public function baseUrl()
     {
         if (isset($this->baseUrl)) {
             return $this->baseUrl;
         }
 
         return 'http://localhost:8888';
-    }
-
-    /**
-     * Call a URI in the application.
-     *
-     * @param  string $requestType
-     * @param  string $uri
-     * @param  array  $parameters
-     * @return self
-     */
-    protected function makeRequest($requestType, $uri)
-    {
-        $this->crawler = $this->client()->request('GET', $uri);
-
-        $this->clearInputs()->assertPageLoaded($uri);
-
-        return $this;
     }
 
     /**
@@ -61,6 +44,23 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
         );
 
         $this->currentPage = $this->client()->getHistory()->current()->getUri();
+
+        return $this;
+    }
+
+    /**
+     * Call a URI in the application.
+     *
+     * @param  string $requestType
+     * @param  string $uri
+     * @param  array  $parameters
+     * @return self
+     */
+    protected function makeRequest($requestType, $uri)
+    {
+        $this->crawler = $this->client()->request('GET', $uri);
+
+        $this->clearInputs()->assertPageLoaded($uri);
 
         return $this;
     }
