@@ -277,6 +277,17 @@ trait IntegrationTrait
     }
 
     /**
+     * Alias that points to the click method.
+     *
+     * @param  string $text
+     * @return self
+     */
+    public function follow($text)
+    {
+        return $this->click($text);
+    }
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table

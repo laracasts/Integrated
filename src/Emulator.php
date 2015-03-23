@@ -45,6 +45,14 @@ interface Emulator
     public function click($text);
 
     /**
+     * Alias that points to the click method.
+     *
+     * @param  string $text
+     * @return self
+     */
+    public function follow($text);
+
+    /**
      * Submit a form on the page.
      *
      * @param  string $buttonText
