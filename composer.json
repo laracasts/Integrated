@@ -1,6 +1,7 @@
 {
     "name": "laracasts/integrated",
     "description": "Simple, intuitive integration testing with PHPUnit.",
+    "keywords": ["testing", "laravel", "goutte", "integration", "laracasts"],
     "license": "MIT",
     "authors": [
         {
