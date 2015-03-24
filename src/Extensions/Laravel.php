@@ -2,6 +2,7 @@
 
 namespace Laracasts\Integrated\Extensions;
 
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Emulator;
@@ -118,5 +119,29 @@ abstract class Laravel extends TestCase implements Emulator
     protected function statusCode()
     {
         return $this->response->getStatusCode();
+    }
+
+    /**
+     * Provide additional messaging for 500 errors.
+     *
+     * @param  string|null $message
+     * @throws PHPUnitException
+     * @return void
+     */
+    protected function handleInternalError($message = null)
+    {
+        $crawler = new Crawler($this->content(), $this->currentPage);
+
+        // A little weird, but we need to parse the output HTML to
+        // figure out the specifics of where the error occurred.
+        // There might be an easier way to figure this out.
+
+        $crawler = $crawler->filter('.exception_title');
+        $exception = $crawler->filter('abbr')->html();
+        $location = $crawler->filter('a')->extract('title')[0];
+
+        $message .= "\n\n{$exception} on {$location}";
+
+        throw new PHPUnitException($message);
     }
 }

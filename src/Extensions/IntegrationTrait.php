@@ -319,13 +319,19 @@ trait IntegrationTrait
         $status = $this->statusCode();
 
         try {
+            $this->assertEquals(200, $status);
+        } catch (PHPUnitException $e) {
             $message = "A GET request to '{$uri}' failed. Got a {$status} code instead.";
 
-            $this->assertEquals(200, $status, $message);
-        } catch (PHPUnitException $e) {
             $this->logLatestContent();
 
-            throw $e;
+            if ($status == 500) {
+                if (method_exists($this, 'handleInternalError')) {
+                    $this->handleInternalError($message);
+                }
+            }
+
+            throw new PHPUnitException($message);
         }
     }
 
