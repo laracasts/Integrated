@@ -181,6 +181,29 @@ $this->visit('newsletter')
 
 The `check` method is an alias for `tick`. Use either.
 
+#### `select($selectName, $optionValue)`
+
+This method allows you to select an option from a dropdown. You only need to provide the name of the `select` element, and the `value` attribute from the desired `option` tag.
+
+```php
+$this->visit('signup')
+     ->select('plan', 'monthly')
+     ->press('Sign Up');
+```
+
+The following HTML would satisfy the example above:
+
+```html
+<form method="POST" action="...">
+  <select name="plan">
+    <option value="monthly">Monthly</option>
+    <option value="yearly">Yearly</option>
+  </select>
+
+  <input type="submit" value="Sign Up">
+</form>
+```
+
 #### `press($submitText)`
 
 Not to be confused with `click`, the `press` method is used to submit a form with a submit button that has the given text.
