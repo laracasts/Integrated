@@ -132,13 +132,7 @@ trait IntegrationTrait
      */
     public function type($text, $element)
     {
-        $this->assertFilterProducedResults($element);
-
-        $element = str_replace('#', '', $element);
-
-        $this->inputs[$element] = $text;
-
-        return $this;
+        return $this->fill($text, $element);
     }
 
     /**
@@ -150,7 +144,7 @@ trait IntegrationTrait
      */
     public function fill($text, $element)
     {
-        return $this->type($text, $element);
+        return $this->storeInput($element, $text);
     }
 
     /**
@@ -161,13 +155,7 @@ trait IntegrationTrait
      */
     public function check($element)
     {
-        $this->assertFilterProducedResults($element);
-
-        $element = str_replace('#', '', $element);
-
-        $this->inputs[$element] = true;
-
-        return $this;
+        return $this->storeInput($element, true);
     }
 
     /**
@@ -190,11 +178,23 @@ trait IntegrationTrait
      */
     public function select($element, $option)
     {
-        // $this->assertFilterProducedResults($element);
+        return $this->storeInput($element, $option);
+    }
 
-        $element = str_replace('#', '', $element);
+    /**
+     * Store a form input.
+     *
+     * @param  string $name
+     * @param  string $value
+     * @return self
+     */
+    protected function storeInput($name, $value)
+    {
+        $this->assertFilterProducedResults($name);
 
-        $this->inputs[$element] = $option;
+        $name = str_replace('#', '', $name);
+
+        $this->inputs[$name] = $value;
 
         return $this;
     }
@@ -229,7 +229,7 @@ trait IntegrationTrait
      */
     protected function fillForm($buttonText, $formData = [])
     {
-        if ( ! is_string($buttonText)) {
+        if (! is_string($buttonText)) {
             $formData = $buttonText;
             $buttonText = null;
         }
@@ -418,7 +418,7 @@ trait IntegrationTrait
      */
     protected function getPackageConfig()
     {
-        if ( ! $this->packageConfig) {
+        if (! $this->packageConfig) {
             $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
         }
 
