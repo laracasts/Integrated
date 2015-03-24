@@ -126,19 +126,19 @@ trait IntegrationTrait
     /**
      * Click a link with the given body.
      *
-     * @param  string $text
+     * @param  string $name
      * @return self
      */
-    public function click($text)
+    public function click($name)
     {
-        $link = $this->crawler->selectLink($text);
+        $link = $this->crawler->selectLink($name);
 
         // If we couldn't find the link by its body, then
         // we'll do a second pass and see if the user
         // provided a name or id attribute instead.
 
         if (! count($link)) {
-            $link = $this->filterByNameOrId($text);
+            $link = $this->filterByNameOrId($name, 'a');
 
             if ( ! count($link)) {
                 $message = "Couldn't see a link with a body, name, or id attribute of, '{$name}'.";
@@ -338,19 +338,7 @@ trait IntegrationTrait
      */
     protected function assertFilterProducedResults($filter)
     {
-        // We'll first assume that an element or id was provided.
-
-        $crawler = $this->crawler->filter($filter);
-
-        // If we couldn't find anything, we'll do one more check to
-        // see if a name attribute for the element was provided.
-
-        if (! count($crawler)) {
-            $filter = str_replace('#', '', $filter);
-            $crawler = $this->crawler->filter("* [name={$filter}]");
-        }
-
-        // Lastly, if we still have nothing, we'll alert the user.
+        $crawler = $this->filterByNameOrId($filter);
 
         if (! count($crawler)) {
             $message = "Nothing matched the '{$filter}' CSS query provided for {$this->currentPage}.";
@@ -408,13 +396,14 @@ trait IntegrationTrait
      * Filter according to an element's name or id attribute.
      *
      * @param  string $name
+     * @param  string $element
      * @return Crawler
      */
-    protected function filterByNameOrId($name)
+    protected function filterByNameOrId($name, $element = '*')
     {
         $name = str_replace('#', '', $name);
 
-        return $this->crawler->filter("a#{$name}, a[name={$name}]");
+        return $this->crawler->filter("{$element}#{$name}, {$element}[name={$name}]");
     }
 
     /**
