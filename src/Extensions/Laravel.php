@@ -84,7 +84,7 @@ abstract class Laravel extends TestCase implements Emulator
     protected function makeRequestUsingForm(Form $form)
     {
         return $this->makeRequest(
-            $form->getMethod(), $this->currentPage, $form->getValues()
+            $form->getMethod(), $form->getUri(), $form->getValues()
         );
     }
 
