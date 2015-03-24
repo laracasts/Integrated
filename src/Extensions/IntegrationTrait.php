@@ -87,7 +87,7 @@ trait IntegrationTrait
 
             $this->assertRegExp("/{$text}/i", $this->content(), $message);
         } catch (PHPUnitException $e) {
-            $this->writeFailureToLogs();
+            $this->logLatestContent();
 
             throw $e;
         }
@@ -121,6 +121,38 @@ trait IntegrationTrait
     public function onPage($page)
     {
         return $this->seePageIs($page);
+    }
+
+    /**
+     * Click a link with the given body.
+     *
+     * @param  string $text
+     * @return self
+     */
+    public function click($text)
+    {
+        $link = $this->crawler->selectLink($text);
+
+        if (! count($link)) {
+            $message = "Couldn't find a link with the given text, '{$text}'.";
+
+            throw new InvalidArgumentException($message);
+        }
+
+        $this->visit($link->link()->getUri());
+
+        return $this;
+    }
+
+    /**
+     * Alias that points to the click method.
+     *
+     * @param  string $text
+     * @return self
+     */
+    public function follow($text)
+    {
+        return $this->click($text);
     }
 
     /**
@@ -200,16 +232,6 @@ trait IntegrationTrait
     }
 
     /**
-     * Dump the response content from the last request to the console.
-     *
-     * @return void
-     */
-    public function dump()
-    {
-        die(var_dump($this->content()));
-    }
-
-    /**
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText
@@ -218,6 +240,18 @@ trait IntegrationTrait
     public function press($buttonText)
     {
         return $this->submitForm($buttonText, $this->inputs);
+    }
+
+    /**
+     * Dump the response content from the last request to the console.
+     *
+     * @return void
+     */
+    public function dump()
+    {
+        $this->logLatestContent();
+
+        die(var_dump($this->content()));
     }
 
     /**
@@ -240,28 +274,27 @@ trait IntegrationTrait
     /**
      * Get the form from the DOM.
      *
-     * @param  mixed $buttonText
+     * @param  string|null $button
      * @throws InvalidArgumentException
      * @return Form
      */
-    protected function getForm($buttonText = null)
+    protected function getForm($button = null)
     {
         // If the first argument isn't a string, that means
         // the user wants us to auto-find the form.
 
         try {
-            if ($buttonText) {
-                return $this->crawler->selectButton($buttonText)->form();
+            if ($button) {
+                return $this->crawler->selectButton($button)->form();
             }
 
             return $this->crawler->filter('form')->form();
         } catch (InvalidArgumentException $e) {
-
             // We'll catch the exception, in order to provide a
             // more readable failure message for the user.
 
             throw new InvalidArgumentException(
-                "Couldn't find a form that contains a button with text '{$buttonText}'."
+                "Couldn't find a form that contains a button with text '{$button}'."
             );
         }
     }
@@ -278,11 +311,11 @@ trait IntegrationTrait
         $status = $this->statusCode();
 
         try {
-            $message = "The GET request to '{$uri}' failed. Got a {$status} code instead.";
+            $message = "A GET request to '{$uri}' failed. Got a {$status} code instead.";
 
             $this->assertEquals(200, $status, $message);
         } catch (PHPUnitException $e) {
-            $this->writeFailureToLogs();
+            $this->logLatestContent();
 
             throw $e;
         }
@@ -316,38 +349,6 @@ trait IntegrationTrait
 
             throw new InvalidArgumentException($message);
         }
-    }
-
-    /**
-     * Click a link with the given body.
-     *
-     * @param  string $text
-     * @return self
-     */
-    public function click($text)
-    {
-        $link = $this->crawler->selectLink($text);
-
-        if (! count($link)) {
-            $message = "Couldn't find a link with the given text, '{$text}'.";
-
-            throw new InvalidArgumentException($message);
-        }
-
-        $this->visit($link->link()->getUri());
-
-        return $this;
-    }
-
-    /**
-     * Alias that points to the click method.
-     *
-     * @param  string $text
-     * @return self
-     */
-    public function follow($text)
-    {
-        return $this->click($text);
     }
 
     /**
@@ -396,11 +397,11 @@ trait IntegrationTrait
     }
 
     /**
-     * Write the response content to an output file for the user.
+     * Log the response content to an output file for the user.
      *
      * @return void
      */
-    protected function writeFailureToLogs()
+    protected function logLatestContent()
     {
         $outputDir = 'tests/logs';
 

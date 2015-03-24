@@ -292,7 +292,7 @@ When you want to quickly spit out the response content from the most recent requ
 $this->visit('/page')->dump();
 ```
 
-Please note that this method will `die`. So no tests beyond this call will be fired. Nonetheless, it's great for the times when you need a better look at what you're working with, temporarily of course.
+This will both dump the response content to the console, and save it to a `tests/logs/output.txt` file, for your review. Please note that this method will `die`. So no tests beyond this call will be fired. Nonetheless, it's great for the times when you need a better look at what you're working with, temporarily of course.
 
 ### TestDummy
 
