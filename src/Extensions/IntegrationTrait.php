@@ -154,6 +154,15 @@ trait IntegrationTrait
     }
 
     /**
+    /**
+     * Dump the response content from the last request to the console.
+     *
+     * @return void
+     */
+    public function dump()
+    {
+        die(var_dump($this->content()));
+    }
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText

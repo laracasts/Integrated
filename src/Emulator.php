@@ -104,4 +104,11 @@ interface Emulator
      * @return self
      */
     public function verifyInDatabase($table, array $data);
+
+    /**
+     * Dump the response content from the last request to the console.
+     *
+     * @return void
+     */
+    public function dump();
 }
