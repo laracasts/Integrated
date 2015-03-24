@@ -133,10 +133,18 @@ trait IntegrationTrait
     {
         $link = $this->crawler->selectLink($text);
 
-        if (! count($link)) {
-            $message = "Couldn't find a link with the given text, '{$text}'.";
+        // If we couldn't find the link by its body, then
+        // we'll do a second pass and see if the user
+        // provided a name or id attribute instead.
 
-            throw new InvalidArgumentException($message);
+        if (! count($link)) {
+            $link = $this->filterByNameOrId($text);
+
+            if ( ! count($link)) {
+                $message = "Couldn't see a link with a body, name, or id attribute of, '{$name}'.";
+
+                throw new InvalidArgumentException($message);
+            }
         }
 
         $this->visit($link->link()->getUri());
@@ -394,6 +402,19 @@ trait IntegrationTrait
         $this->inputs = [];
 
         return $this;
+    }
+
+    /**
+     * Filter according to an element's name or id attribute.
+     *
+     * @param  string $name
+     * @return Crawler
+     */
+    protected function filterByNameOrId($name)
+    {
+        $name = str_replace('#', '', $name);
+
+        return $this->crawler->filter("a#{$name}, a[name={$name}]");
     }
 
     /**

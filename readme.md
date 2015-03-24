@@ -136,6 +136,8 @@ $this->visit('/page')
      ->click('Follow Me');
 ```
 
+While it's easiest if you pass the text content of the desired anchor tag to the `click` method (like "Sign Up"), you may also use the anchor tag's `name` or `id` attributes if you wish.
+
 Behind the scenes, this package will determine that destination of the link (the "href"), and make a new "GET" request, accordingly. Alternatively, you may use the `follow()` method. Same thing.
 
 
