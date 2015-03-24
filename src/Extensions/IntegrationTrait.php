@@ -182,6 +182,24 @@ trait IntegrationTrait
     }
 
     /**
+     * Select an option from a dropdown.
+     *
+     * @param  string $element
+     * @param  string $option
+     * @return self
+     */
+    public function select($element, $option)
+    {
+        // $this->assertFilterProducedResults($element);
+
+        $element = str_replace('#', '', $element);
+
+        $this->inputs[$element] = $option;
+
+        return $this;
+    }
+
+    /**
      * Dump the response content from the last request to the console.
      *
      * @return void

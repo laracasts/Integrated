@@ -104,6 +104,15 @@ interface Emulator
     public function tick($element);
 
     /**
+     * Select an option from a dropdown.
+     *
+     * @param  string $element
+     * @param  string $option
+     * @return self
+     */
+    public function select($element, $option);
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table
