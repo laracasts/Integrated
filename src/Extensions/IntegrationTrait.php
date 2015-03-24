@@ -154,6 +154,33 @@ trait IntegrationTrait
     }
 
     /**
+     * Check a checkbox.
+     *
+     * @param  string $element
+     * @return self
+     */
+    public function check($element)
+    {
+        $this->assertFilterProducedResults($element);
+
+        $element = str_replace('#', '', $element);
+
+        $this->inputs[$element] = true;
+
+        return $this;
+    }
+
+    /**
+     * Alias that defers to check method.
+     *
+     * @param  string $element
+     * @return self
+     */
+    public function tick($element)
+    {
+        return $this->check($element);
+    }
+
     /**
      * Dump the response content from the last request to the console.
      *
@@ -163,6 +190,8 @@ trait IntegrationTrait
     {
         die(var_dump($this->content()));
     }
+
+    /**
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText

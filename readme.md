@@ -169,6 +169,18 @@ $this->visit('search')
 
 Simply provide the value for the input, and a CSS selector for us to hunt down the input that you're looking for. You may pass an id, element name, or an input with the given "name" attribute. The `fill` method is an alias that does the same thing.
 
+#### `tick($name)` or `check($name)`
+
+To "tick" a checkbox, call the `tick` method, and pass either the id or the name of the input.
+
+```php
+$this->visit('newsletter')
+     ->tick('opt-in')
+     ->press('Save');
+```
+
+The `check` method is an alias for `tick`. Use either.
+
 #### `press($submitText)`
 
 Not to be confused with `click`, the `press` method is used to submit a form with a submit button that has the given text.

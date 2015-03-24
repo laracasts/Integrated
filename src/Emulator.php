@@ -88,6 +88,22 @@ interface Emulator
     public function fill($text, $element);
 
     /**
+     * Check a checkbox.
+     *
+     * @param  string $element
+     * @return self
+     */
+    public function check($element);
+
+    /**
+     * Alias that defers to check method.
+     *
+     * @param  string $element
+     * @return self
+     */
+    public function tick($element);
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table
