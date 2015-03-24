@@ -4,7 +4,6 @@ namespace Laracasts\Integrated\Extensions;
 
 use Laracasts\Integrated\Database\Connection;
 use Laracasts\Integrated\Database\Adapter;
-use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Emulator;
 use Goutte\Client;
 
