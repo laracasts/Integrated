@@ -365,5 +365,5 @@ function it_shows_posts()
 
 #### Can I test JavaScript with this method?
 
-No. For client-side interactions, you'll want to use something like Selenium.
+Not quite yet, however, a Selenium extension is in the works for this package. Check back soon.
 
