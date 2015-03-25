@@ -28,11 +28,9 @@ class AnnotationReader
     {
         $methods = [];
 
-        foreach ($this->getTraits() as $trait) {
-            foreach ($trait->getMethods() as $method) {
-                if (Str::contains($method->getDocComment(), "@{$annotation}")) {
-                    $methods[] = $method->getName();
-                }
+        foreach ($this->reflectInto($this->reference) as $method) {
+            if ($this->hasAnnotation($annotation, $method)) {
+                $methods[] = $method->getName();
             }
         }
 
@@ -42,10 +40,24 @@ class AnnotationReader
     /**
      * Load any user-created traits for the current object.
      *
+     * @param  object $object
      * @return ReflectionClass
      */
-    protected function getTraits()
+    protected function reflectInto($object)
     {
-        return (new ReflectionClass($this->reference))->getTraits();
+        return (new ReflectionClass($object))->getMethods();
     }
+
+    /**
+     * Search the docblock for the given annotation.
+     *
+     * @param  string            $annotation
+     * @param  \ReflectionMethod $method
+     * @return boolean
+     */
+    protected function hasAnnotation($annotation, \ReflectionMethod $method)
+    {
+        return Str::contains($method->getDocComment(), "@{$annotation}");
+    }
+
 }
