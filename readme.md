@@ -2,7 +2,7 @@
 
 Simple, intuitive integration testing with PHPUnit. For the projects where you're less interested in fancy tools and discussions with the business, and more concerned with just ensuring that the dang thing works. :) 
 
-- [Installation](#step-1-install])
+- [Installation](#step-1-install)
 - [Extend](#step-2-extend)
 - [Examples](#step-3-write-some-integration-tests)
 - [API](#api)

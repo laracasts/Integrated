@@ -162,7 +162,7 @@ trait IntegrationTrait
         if (! count($link)) {
             $link = $this->filterByNameOrId($name, 'a');
 
-            if ( ! count($link)) {
+            if (! count($link)) {
                 $message = "Couldn't see a link with a body, name, or id attribute of, '{$name}'.";
 
                 throw new InvalidArgumentException($message);
