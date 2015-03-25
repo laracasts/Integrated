@@ -22,14 +22,30 @@ composer require laracasts/integrated --dev
 
 ### Step 2: Extend
 
-Within a PHPUnit test class, extend either `Laracasts\Integrated\Extensions\Goutte` for general PHP applications, or `Laracasts\Integrated\Extensions\Laravel`, if you use Laravel.
+Currently, you have the option of using a Goutte extension, for general PHP applications, or a Laravel-specific extension. For the former, simply create a PHPUnit test class, and extend `Laracasts\Integrated\Extensions\Goutte`.
 
 ```php
 <?php // tests/ExampleTest.php
 
-use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
+use Laracasts\Integrated\Extensions\Goutte as IntegrationTest;
 
 class ExampleTest extends IntegrationTest {}
+```
+
+On the other hand, if you're working with Laravel, have your main `tests/TestCase.php` class extend `Laracasts\Integrated\Extensions\Laravel`, like so:
+
+```php
+<?php // tests/ExampleTest.php
+
+class ExampleTest extends TestCase {}
+```
+
+```php
+<?php // tests/TestCase.php
+
+use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
+
+class TestCase extends IntegrationTest {}
 ```
 
 ### Step 3: Write Some Integration Tests

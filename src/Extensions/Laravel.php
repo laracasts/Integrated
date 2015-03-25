@@ -3,10 +3,10 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Illuminate\Foundation\Testing\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Emulator;
-use TestCase;
 
 abstract class Laravel extends TestCase implements Emulator
 {
