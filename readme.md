@@ -2,6 +2,14 @@
 
 Simple, intuitive integration testing with PHPUnit. For the projects where you're less interested in fancy tools and discussions with the business, and more concerned with just ensuring that the dang thing works. :) 
 
+- [Installation](#step-1-install])
+- [Extend](#step-2-extend)
+- [Examples](#step-3-write-some-integration-tests)
+- [API](#api)
+- [Extras](#extras)
+- [FAQ](#faq)
+
+
 ## Usage
 
 ### Step 1: Install
@@ -104,7 +112,7 @@ class ExampleTest extends IntegrationTest
 }
 ```
 
-### Step 4: Integration Methods
+## API
 
 If you'd like to dig into the API examples from above a bit more, here is what each method call accomplishes.
 
@@ -296,13 +304,15 @@ $this->visit('/page')->dump();
 
 This will both dump the response content to the console, and save it to a `tests/logs/output.txt` file, for your review. Please note that this method will `die`. So no tests beyond this call will be fired. Nonetheless, it's great for the times when you need a better look at what you're working with, temporarily of course.
 
+## Extras
+
 ### Database Transactions
 
 If you're using the Laravel extension of this package, then you may also pull in a trait, which automatically sets up database transactions. By including this trait, after each test completes, your database will be "rolled back" to its original state. For example, if one test you write requires you to populate a table with a few rows. Well, after that test finishes, this trait will clear out those rows automatically.
 
 Use it, like so:
 
-```
+```php
 <?php
 
 use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
@@ -335,7 +345,7 @@ function it_shows_posts()
 }
 ```
 
-### FAQ
+## FAQ
 
 #### Can I test JavaScript with this method?
 
