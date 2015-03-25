@@ -38,7 +38,7 @@ class AnnotationReader
     }
 
     /**
-     * Load any user-created traits for the current object.
+     * Reflect into the given object.
      *
      * @param  object $object
      * @return ReflectionClass
