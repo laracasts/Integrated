@@ -22,4 +22,18 @@ class Str
 
         return false;
     }
+
+    /**
+     * Determine if a string is contains within another string.
+     *
+     * @param  string $haystack
+     * @param  string $needle
+     * @return boolean
+     */
+    public static function contains($haystack, $needle)
+    {
+        if ($needle != '' && stripos($haystack, $needle) !== false) {
+            return true;
+        }
+    }
 }

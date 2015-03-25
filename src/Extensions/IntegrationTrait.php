@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Laracasts\Integrated\AnnotationReader;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\Str;
 use InvalidArgumentException;
@@ -37,6 +38,27 @@ trait IntegrationTrait
      * @var array
      */
     protected $packageConfig;
+
+    /**
+     * The annotation reader instance.
+     *
+     * @var AnnotationReader
+     */
+    protected $annotations;
+
+    /**
+     * Prepare the test for PHPUnit.
+     *
+     * @return  void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->callMethods(
+            $this->getAnnotations()->having('setUp')
+        );
+    }
 
     /**
      * Make a GET request to the given uri.
@@ -440,6 +462,45 @@ trait IntegrationTrait
         }
 
         return $this->packageConfig;
+    }
+
+    /**
+     * Get the annotation reader instance.
+     *
+     * @return AnnotationReader
+     */
+    public function getAnnotations()
+    {
+        if (! $this->annotations) {
+            $this->annotations = new AnnotationReader($this);
+        }
+
+        return $this->annotations;
+    }
+
+    /**
+     * Trigger all provided methods on the current object.
+     *
+     * @param  array $methods
+     * @return void
+     */
+    protected function callMethods(array $methods)
+    {
+        foreach ($methods as $method) {
+            call_user_func([$this, $method]);
+        }
+    }
+
+    /**
+     * Clean up after for PHPUnit.
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->callMethods(
+            $this->getAnnotations()->having('tearDown')
+        );
     }
 
     /**

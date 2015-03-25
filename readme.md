@@ -296,6 +296,25 @@ $this->visit('/page')->dump();
 
 This will both dump the response content to the console, and save it to a `tests/logs/output.txt` file, for your review. Please note that this method will `die`. So no tests beyond this call will be fired. Nonetheless, it's great for the times when you need a better look at what you're working with, temporarily of course.
 
+### Database Transactions
+
+If you're using the Laravel extension of this package, then you may also pull in a trait, which automatically sets up database transactions. By including this trait, after each test completes, your database will be "rolled back" to its original state. For example, if one test you write requires you to populate a table with a few rows. Well, after that test finishes, this trait will clear out those rows automatically.
+
+Use it, like so:
+
+```
+<?php
+
+use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
+use Laracasts\Integrated\Services\Laravel\DatabaseTransactions;
+
+class ExampleTest extends IntegrationTest {
+  use DatabaseTransactions;
+}
+```
+
+Done!
+
 ### TestDummy
 
 To help with RAD, this package includes the "laracasts/testdummy" package out of the box. For integration tests that hit a database, you'll likely want this anyways. Refer to the [TestDummy](https://github.com/laracasts/TestDummy) documentation for a full overview, but, in short, it gives you a very simple way to build up and/or persist your entities (like your Eloquent models), for the purposes of testing.
