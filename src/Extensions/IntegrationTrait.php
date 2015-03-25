@@ -423,9 +423,9 @@ trait IntegrationTrait
 
         if (! is_dir($outputDir)) {
             mkdir($outputDir, 0777, true);
-
-            file_put_contents("{$outputDir}/output.txt", $this->content());
         }
+
+        file_put_contents("{$outputDir}/output.txt", $this->content());
     }
 
     /**
