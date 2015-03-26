@@ -406,20 +406,38 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
     }
 
     /**
-     * Halt the proces for any number of seconds.
+     * Halt the process for any number of seconds.
      *
      * @param  integer $seconds
      * @return self
      */
-    public function wait($seconds = 4)
+    public function wait($milliseconds = 4000)
     {
-        // We'll provide a little protection, in case the
-        // user thinks they're providing milliseconds.
-        if ($seconds >= 1000) {
-            $seconds = 4;
-        }
+        sleep($milliseconds / 1000);
 
-        sleep($seconds);
+        return $this;
+    }
+
+    /**
+     * Continuously poll the page, until you find an element
+     * with the given name or id.
+     *
+     * @param  string  $element
+     * @param  integer $timeout
+     * @return self
+     */
+    public function waitForElement($element, $timeout = 5000)
+    {
+        $this->session->timeouts()->postImplicit_wait(['ms' => $timeout]);
+
+        try {
+            $this->findByNameOrId($element);
+        } catch (InvalidArgumentException $e) {
+            throw new InvalidArgumentException(
+                "Hey, what's happening... Look, I waited {$timeout} milliseconds to see an element with " .
+                "a name or id of '{$element}', but no luck. \nIf you could take a look, that'd be greaaattt..."
+            );
+        }
 
         return $this;
     }

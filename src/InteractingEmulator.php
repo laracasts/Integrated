@@ -27,4 +27,14 @@ interface InteractingEmulator
      * @return self
      */
     public function snap($destination = null);
+
+    /**
+     * Continuously poll the page, until you find an element
+     * with the given name or id.
+     *
+     * @param  string  $element
+     * @param  integer $timeout
+     * @return self
+     */
+    public function waitForElement($element, $timeout = 5000);
 }
