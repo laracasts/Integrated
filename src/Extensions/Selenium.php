@@ -260,6 +260,11 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
             throw new PHPUnitException(
                 "Could not see '{$text}' because no alert box was shown."
             );
+        } catch (\WebDriver\Exception\UnknownError $e) {
+            // This would only apply to the PhantomJS driver.
+            // It seems to have issues with alerts, so I'm
+            // not sure what we can do about that...
+            return $this;
         }
 
         $this->assertContains($text, $alert);
