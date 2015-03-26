@@ -289,6 +289,23 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
         return $this;
     }
 
+    public function snap($destination = null)
+    {
+        $destination = $destination ?: './tests/logs/screenshot.png';
+        $dir = dirname($destination);
+
+        if (! is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
+        file_put_contents(
+            $destination,
+            base64_decode($this->session->screenshot())
+        );
+
+        return $this;
+    }
+
     /**
      * Get the number of rows that match the given condition.
      *
