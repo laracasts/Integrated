@@ -365,5 +365,5 @@ function it_shows_posts()
 
 #### Can I test JavaScript with this method?
 
-Not quite yet, however, a Selenium extension is in the works for this package. Check back soon.
+Yes. You'll need to extend the Selenium extension that is included with this package. However, it's still in the early stages. Basic commands work, but, if you need more functionality, please create an issue so that I can implement it for you sooner than later. (Updated March 26th, 2015).
 
