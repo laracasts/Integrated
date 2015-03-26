@@ -457,10 +457,22 @@ trait IntegrationTrait
     protected function getPackageConfig()
     {
         if (! $this->packageConfig) {
-            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+            $this->packageConfig = json_decode($this->getConfigFile(), true);
         }
 
         return $this->packageConfig;
+    }
+
+    /**
+     * Get the config file if exists.
+     *
+     * @return string
+     */
+    public function getConfigFile()
+    {
+        $content = @file_get_contents('integrated.json');
+
+        return $content === false ? '{}' : $content;
     }
 
     /**
