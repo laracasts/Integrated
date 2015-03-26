@@ -19,4 +19,12 @@ interface InteractingEmulator
      * @return self
      */
     public function acceptAlert();
+
+    /**
+     * Take a snapshot of the current page.
+     *
+     * @param  string|null $destination
+     * @return self
+     */
+    public function snap($destination = null);
 }
