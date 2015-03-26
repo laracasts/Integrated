@@ -348,10 +348,8 @@ trait IntegrationTrait
 
             $this->logLatestContent();
 
-            if ($status == 500) {
-                if (method_exists($this, 'handleInternalError')) {
-                    $this->handleInternalError($message);
-                }
+            if (method_exists($this, 'handleInternalError')) {
+                $this->handleInternalError($message);
             }
 
             throw new PHPUnitException($message);
