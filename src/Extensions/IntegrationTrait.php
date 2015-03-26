@@ -5,6 +5,7 @@ namespace Laracasts\Integrated\Extensions;
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Laracasts\Integrated\AnnotationReader;
 use Symfony\Component\DomCrawler\Form;
+use Laracasts\Integrated\File;
 use Laracasts\Integrated\Str;
 use InvalidArgumentException;
 use BadMethodCallException;
@@ -440,13 +441,7 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $outputDir = 'tests/logs';
-
-        if (! is_dir($outputDir)) {
-            mkdir($outputDir, 0777, true);
-        }
-
-        file_put_contents("{$outputDir}/output.txt", $this->content());
+        $this->files()->put("tests/logs/output.txt", $this->content());
     }
 
     /**
@@ -479,6 +474,16 @@ trait IntegrationTrait
         }
 
         return $this->annotations;
+    }
+
+    /**
+     * Get a filesystem class.
+     *
+     * @return File
+     */
+    public function files()
+    {
+        return new File;
     }
 
     /**
