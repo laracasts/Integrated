@@ -333,17 +333,18 @@ trait IntegrationTrait
      * Assert that a 200 status code was returned from the last call.
      *
      * @param  string $uri
+     * @param  string $message
      * @throws PHPUnitException
      * @return void
      */
-    protected function assertPageLoaded($uri)
+    protected function assertPageLoaded($uri, $message = null)
     {
         $status = $this->statusCode();
 
         try {
             $this->assertEquals(200, $status);
         } catch (PHPUnitException $e) {
-            $message = "A GET request to '{$uri}' failed. Got a {$status} code instead.";
+            $message = $message ?: "A GET request to '{$uri}' failed. Got a {$status} code instead.";
 
             $this->logLatestContent();
 
