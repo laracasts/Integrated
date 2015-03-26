@@ -257,7 +257,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
         try {
             $alert = $this->session->alert_text();
         } catch (\WebDriver\Exception\NoAlertOpenError $e) {
-            throw new InvalidArgumentException(
+            throw new PHPUnitException(
                 "Could not see '{$text}' because no alert box was shown."
             );
         }
