@@ -13,6 +13,16 @@ abstract class Laravel extends TestCase implements Emulator
     use IntegrationTrait;
 
     /**
+     * Enable method spoofing for HTML forms with a "_method" attribute.
+     *
+     * @setUp
+     */
+    protected function enableMethodSpoofing()
+    {
+        $this->app['request']->enableHttpMethodParameterOverride();
+    }
+
+    /**
      * Get the base url for all requests.
      *
      * @return string
@@ -145,14 +155,4 @@ abstract class Laravel extends TestCase implements Emulator
         throw new PHPUnitException($message);
     }
 
-    /**
-     * Enable method spoofing for HTML forms with a "_method" attribute.
-     *
-     * @see Symfony\Component\HttpFoundation\Request::enableHttpMethodParameterOverride()
-     * @setUp
-     */
-    protected function enableMethodSpoofing()
-    {
-        $this->app['request']->enableHttpMethodParameterOverride();
-    }
 }
