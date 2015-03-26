@@ -456,23 +456,15 @@ trait IntegrationTrait
      */
     protected function getPackageConfig()
     {
+        if ( ! file_exists('integrated.json')) {
+            return [];
+        }
+
         if (! $this->packageConfig) {
-            $this->packageConfig = json_decode($this->getConfigFile(), true);
+            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
         }
 
         return $this->packageConfig;
-    }
-
-    /**
-     * Get the config file if exists.
-     *
-     * @return string
-     */
-    public function getConfigFile()
-    {
-        $content = @file_get_contents('integrated.json');
-
-        return $content === false ? '{}' : $content;
     }
 
     /**
