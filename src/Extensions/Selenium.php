@@ -332,7 +332,9 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
      */
     public function closeBrowser()
     {
-        $this->session->close();
+        if ($this->session) {
+            $this->session->close();
+        }
     }
 
     /**
