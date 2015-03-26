@@ -2,6 +2,7 @@
 
 namespace Laracasts\Integrated\Extensions;
 
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Laracasts\Integrated\Database\Connection;
 use Laracasts\Integrated\Database\Adapter;
 use WebDriver\Exception\NoSuchElement;
@@ -245,6 +246,50 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
     }
 
     /**
+     * Assert that an alert box is displayed, and contains the given text.
+     *
+     * @param  string  $text
+     * @param  boolean $accept
+     * @return
+     */
+    public function seeInAlert($text, $accept = true)
+    {
+        try {
+            $alert = $this->session->alert_text();
+        } catch (\WebDriver\Exception\NoAlertOpenError $e) {
+            throw new InvalidArgumentException(
+                "Could not see '{$text}' because no alert box was shown."
+            );
+        }
+
+        $this->assertContains($text, $alert);
+
+        if ($accept) {
+            $this->acceptAlert();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Accept an alert.
+     *
+     * @return self
+     */
+    public function acceptAlert()
+    {
+        try {
+            $this->session->accept_alert();
+        } catch (\WebDriver\Exception\NoAlertOpenError $e) {
+            throw new PHPUnitException(
+                "Well, tried to accept the alert, but there wasn't one. Dangit."
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the number of rows that match the given condition.
      *
      * @param  string $table
@@ -332,7 +377,9 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
      */
     public function closeBrowser()
     {
-        $this->session->close();
+        if ($this->session) {
+            $this->session->close();
+        }
     }
 
     /**
@@ -385,5 +432,4 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
 
         return 'firefox';
     }
-
 }
