@@ -11,8 +11,8 @@
     ],
     "require": {
         "laracasts/testdummy": "~2.1",
-        "symfony/dom-crawler": "~2.6",
-        "symfony/css-selector": "~2.6",
+        "symfony/dom-crawler": "~2.5|~2.6",
+        "symfony/css-selector": "~2.5|~2.6",
         "fabpot/goutte": "~2.0",
         "instaclick/php-webdriver": "~1.4"
     },
