@@ -7,13 +7,14 @@ use Laracasts\Integrated\Database\Connection;
 use Laracasts\Integrated\Database\Adapter;
 use WebDriver\Exception\NoSuchElement;
 use Laracasts\Integrated\Emulator;
+use Laracasts\Integrated\JavaScriptAwareEmulator;
 use InvalidArgumentException;
 use WebDriver\Element;
 use WebDriver\Session;
 use WebDriver\WebDriver;
 use Exception;
 
-abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator
+abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator, JavaScriptAwareEmulator
 {
     use IntegrationTrait;
 

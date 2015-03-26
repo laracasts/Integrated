@@ -2,8 +2,9 @@
 
 namespace Laracasts\Integrated;
 
-interface InteractingEmulator
+interface JavaScriptAwareEmulator
 {
+
     /**
      * Assert that an alert box is displayed, and contains the given text.
      *
@@ -11,7 +12,7 @@ interface InteractingEmulator
      * @param  boolean $accept
      * @return
      */
-    public function seeInAlert();
+    public function seeInAlert($text, $accept = true);
 
     /**
      * Accept an alert.
