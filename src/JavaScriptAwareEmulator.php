@@ -17,7 +17,7 @@ interface JavaScriptAwareEmulator
     /**
      * Accept an alert.
      *
-     * @return self
+     * @return static
      */
     public function acceptAlert();
 
@@ -25,7 +25,7 @@ interface JavaScriptAwareEmulator
      * Take a snapshot of the current page.
      *
      * @param  string|null $destination
-     * @return self
+     * @return static
      */
     public function snap($destination = null);
 
@@ -35,7 +35,7 @@ interface JavaScriptAwareEmulator
      *
      * @param  string  $element
      * @param  integer $timeout
-     * @return self
+     * @return static
      */
     public function waitForElement($element, $timeout = 5000);
 }

@@ -50,7 +50,7 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      *
      * @param  string $buttonText
      * @param  array|null $formData
-     * @return self
+     * @return static
      */
     public function submitForm($buttonText, $formData = null)
     {
@@ -71,7 +71,7 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      * @param  string $requestType
      * @param  string $uri
      * @param  array  $parameters
-     * @return self
+     * @return static
      */
     protected function makeRequest($requestType, $uri)
     {
