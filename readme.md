@@ -22,7 +22,7 @@ composer require laracasts/integrated --dev
 
 ### Step 2: Extend
 
-Currently, you have the option of using a Goutte extension, for general PHP applications, or a Laravel-specific extension. For the former, simply create a PHPUnit test class, and extend `Laracasts\Integrated\Extensions\Goutte`.
+Currently, you have the option of using a Goutte extension, for general PHP applications, or a Laravel 5 extension. For the former, simply create a PHPUnit test class, and extend `Laracasts\Integrated\Extensions\Goutte`.
 
 ```php
 <?php // tests/ExampleTest.php
@@ -32,7 +32,7 @@ use Laracasts\Integrated\Extensions\Goutte as IntegrationTest;
 class ExampleTest extends IntegrationTest {}
 ```
 
-On the other hand, if you're working with Laravel, have your main `tests/TestCase.php` class extend `Laracasts\Integrated\Extensions\Laravel`, like so:
+On the other hand, if you're working with Laravel 5, have your main `tests/TestCase.php` class extend `Laracasts\Integrated\Extensions\Laravel`, like so:
 
 ```php
 <?php // tests/ExampleTest.php
