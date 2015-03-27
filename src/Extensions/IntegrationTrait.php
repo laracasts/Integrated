@@ -89,7 +89,7 @@ trait IntegrationTrait
         }
 
         if (! Str::startsWith($url, 'http')) {
-            $url = sprintf("%s/%s", $this->baseUrl(), $url);
+            $url = rtrim(sprintf("%s/%s", $this->baseUrl(), $url), '/');
         }
 
         return $url;
