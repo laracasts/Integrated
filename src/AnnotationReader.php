@@ -8,6 +8,13 @@ use ReflectionClass;
 class AnnotationReader
 {
     /**
+     * The object to reflect into.
+     *
+     * @var object
+     */
+    protected $reference;
+
+    /**
      * Create a new AnnotationReader instance.
      *
      * @param mixed $reference
@@ -59,5 +66,4 @@ class AnnotationReader
     {
         return Str::contains($method->getDocComment(), "@{$annotation}");
     }
-
 }
