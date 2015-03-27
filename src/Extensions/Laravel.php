@@ -37,7 +37,7 @@ abstract class Laravel extends TestCase implements Emulator
      *
      * @param  string $buttonText
      * @param  array  $formData
-     * @return self
+     * @return static
      */
     public function submitForm($buttonText, $formData = [])
     {
@@ -54,7 +54,7 @@ abstract class Laravel extends TestCase implements Emulator
      * @param  string $requestType
      * @param  string $uri
      * @param  array  $parameters
-     * @return self
+     * @return static
      */
     protected function makeRequest($requestType, $uri, $parameters = [])
     {
@@ -90,7 +90,7 @@ abstract class Laravel extends TestCase implements Emulator
      * Make a request to a URL using form parameters.
      *
      * @param  Form $form
-     * @return self
+     * @return static
      */
     protected function makeRequestUsingForm(Form $form)
     {

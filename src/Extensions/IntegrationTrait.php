@@ -65,7 +65,7 @@ trait IntegrationTrait
      * Make a GET request to the given uri.
      *
      * @param  string $url
-     * @return self
+     * @return static
      */
     public function visit($uri)
     {
@@ -99,7 +99,7 @@ trait IntegrationTrait
      * Search the DOM for the given text.
      *
      * @param  string $text
-     * @return self
+     * @return static
      */
     public function see($text)
     {
@@ -122,7 +122,7 @@ trait IntegrationTrait
      * Assert that the current page matches a uri.
      *
      * @param  string $uri
-     * @return self
+     * @return static
      */
     public function seePageIs($uri)
     {
@@ -139,7 +139,7 @@ trait IntegrationTrait
      * Alias that defers to seePageIs.
      *
      * @param  string $page
-     * @return self
+     * @return static
      */
     public function onPage($page)
     {
@@ -150,7 +150,7 @@ trait IntegrationTrait
      * Click a link with the given body.
      *
      * @param  string $name
-     * @return self
+     * @return static
      */
     public function click($name)
     {
@@ -179,7 +179,7 @@ trait IntegrationTrait
      * Alias that points to the click method.
      *
      * @param  string $text
-     * @return self
+     * @return static
      */
     public function follow($text)
     {
@@ -191,7 +191,7 @@ trait IntegrationTrait
      *
      * @param  string $text
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function type($text, $element)
     {
@@ -203,7 +203,7 @@ trait IntegrationTrait
      *
      * @param  string $text
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function fill($text, $element)
     {
@@ -214,7 +214,7 @@ trait IntegrationTrait
      * Check a checkbox.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function check($element)
     {
@@ -225,7 +225,7 @@ trait IntegrationTrait
      * Alias that defers to check method.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function tick($element)
     {
@@ -237,7 +237,7 @@ trait IntegrationTrait
      *
      * @param  string $element
      * @param  string $option
-     * @return self
+     * @return static
      */
     public function select($element, $option)
     {
@@ -249,7 +249,7 @@ trait IntegrationTrait
      *
      * @param  string $name
      * @param  string $value
-     * @return self
+     * @return static
      */
     protected function storeInput($name, $value)
     {
@@ -266,7 +266,7 @@ trait IntegrationTrait
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText
-     * @return self
+     * @return static
      */
     public function press($buttonText)
     {
@@ -380,7 +380,7 @@ trait IntegrationTrait
      *
      * @param  string $table
      * @param  array  $data
-     * @return self
+     * @return static
      */
     public function seeInDatabase($table, array $data)
     {
@@ -401,7 +401,7 @@ trait IntegrationTrait
      *
      * @param  string $table
      * @param  array  $data
-     * @return self
+     * @return static
      */
     public function verifyInDatabase($table, array $data)
     {
@@ -411,7 +411,7 @@ trait IntegrationTrait
     /**
      * Clear out the inputs array.
      *
-     * @return self
+     * @return static
      */
     protected function clearInputs()
     {

@@ -8,7 +8,7 @@ interface Emulator
      * Make a GET request to the given page.
      *
      * @param  string $page
-     * @return self
+     * @return static
      */
     public function visit($page);
 
@@ -16,7 +16,7 @@ interface Emulator
      * Search the DOM for the given text.
      *
      * @param  string $text
-     * @return self
+     * @return static
      */
     public function see($text);
 
@@ -24,7 +24,7 @@ interface Emulator
      * Convenience method that defers to onPage.
      *
      * @param  string $page
-     * @return self
+     * @return static
      */
     public function seePageIs($page);
 
@@ -32,7 +32,7 @@ interface Emulator
      * Assert that the current page is...
      *
      * @param  string $page
-     * @return self
+     * @return static
      */
     public function onPage($page);
 
@@ -40,7 +40,7 @@ interface Emulator
      * Click a link with the given body.
      *
      * @param  string $text
-     * @return self
+     * @return static
      */
     public function click($text);
 
@@ -48,7 +48,7 @@ interface Emulator
      * Alias that points to the click method.
      *
      * @param  string $text
-     * @return self
+     * @return static
      */
     public function follow($text);
 
@@ -57,7 +57,7 @@ interface Emulator
      *
      * @param  string $buttonText
      * @param  array|null $formData
-     * @return self
+     * @return static
      */
     public function submitForm($buttonText, $formData = null);
 
@@ -65,7 +65,7 @@ interface Emulator
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText
-     * @return self
+     * @return static
      */
     public function press($buttonText);
 
@@ -74,7 +74,7 @@ interface Emulator
      *
      * @param  string $text
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function type($text, $element);
 
@@ -83,7 +83,7 @@ interface Emulator
      *
      * @param  string $text
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function fill($text, $element);
 
@@ -91,7 +91,7 @@ interface Emulator
      * Check a checkbox.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function check($element);
 
@@ -99,7 +99,7 @@ interface Emulator
      * Alias that defers to check method.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function tick($element);
 
@@ -108,7 +108,7 @@ interface Emulator
      *
      * @param  string $element
      * @param  string $option
-     * @return self
+     * @return static
      */
     public function select($element, $option);
 
@@ -117,7 +117,7 @@ interface Emulator
      *
      * @param  string $table
      * @param  array  $data
-     * @return self
+     * @return static
      */
     public function seeInDatabase($table, array $data);
 
@@ -126,7 +126,7 @@ interface Emulator
      *
      * @param  string $table
      * @param  array $data
-     * @return self
+     * @return static
      */
     public function verifyInDatabase($table, array $data);
 

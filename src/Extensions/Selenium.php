@@ -78,7 +78,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Click a link with the given body.
      *
      * @param  string $name
-     * @return self
+     * @return static
      */
     public function click($name)
     {
@@ -157,7 +157,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      *
      * @param  string $buttonText
      * @param  array $formData
-     * @return self
+     * @return static
      */
     public function submitForm($buttonText, $formData = [])
     {
@@ -187,7 +187,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      *
      * @param  string $text
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function type($text, $element)
     {
@@ -201,7 +201,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Check a checkbox.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function check($element)
     {
@@ -214,7 +214,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Alias that defers to check method.
      *
      * @param  string $element
-     * @return self
+     * @return static
      */
     public function tick($element)
     {
@@ -226,7 +226,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      *
      * @param  string $element
      * @param  string $option
-     * @return self
+     * @return static
      */
     public function select($element, $option)
     {
@@ -239,7 +239,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText
-     * @return self
+     * @return static
      */
     public function press($buttonText)
     {
@@ -280,7 +280,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     /**
      * Accept an alert.
      *
-     * @return self
+     * @return static
      */
     public function acceptAlert()
     {
@@ -299,7 +299,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Take a snapshot of the current page.
      *
      * @param  string|null $destination
-     * @return self
+     * @return static
      */
     public function snap($destination = null)
     {
@@ -344,7 +344,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     /**
      * Update the current page url.
      *
-     * @return self
+     * @return static
      */
     protected function updateCurrentUrl()
     {
@@ -410,7 +410,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * Halt the process for any number of seconds.
      *
      * @param  integer $seconds
-     * @return self
+     * @return static
      */
     public function wait($milliseconds = 4000)
     {
@@ -425,7 +425,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      *
      * @param  string  $element
      * @param  integer $timeout
-     * @return self
+     * @return static
      */
     public function waitForElement($element, $timeout = 5000)
     {
