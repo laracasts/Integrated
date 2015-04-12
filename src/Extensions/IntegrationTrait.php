@@ -64,7 +64,7 @@ trait IntegrationTrait
     /**
      * Make a GET request to the given uri.
      *
-     * @param  string $url
+     * @param  string $uri
      * @return static
      */
     public function visit($uri)
