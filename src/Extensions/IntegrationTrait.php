@@ -388,6 +388,19 @@ trait IntegrationTrait
     }
 
     /**
+     * Ensure that the given file exists.
+     *
+     * @param  string $path
+     * @return static
+     */
+    public function seeFile($path)
+    {
+        $this->assertFileExists($path);
+
+        return $this;
+    }
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table

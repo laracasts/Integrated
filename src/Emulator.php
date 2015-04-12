@@ -122,6 +122,14 @@ interface Emulator
     public function attachFile($element, $absolutePath);
 
     /**
+     * Ensure that the given file exists.
+     *
+     * @param  string $path
+     * @return static
+     */
+    public function seeFile($path);
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table
