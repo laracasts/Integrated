@@ -236,6 +236,22 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     }
 
     /**
+     * Attach a file to a form.
+     *
+     * @param  string $element
+     * @param  string $absolutePath
+     * @return static
+     */
+    public function attachFile($element, $absolutePath)
+    {
+        $path = ['value' => [$absolutePath]];
+
+        $this->findByNameOrId($element)->postValue($path);
+
+        return $this;
+    }
+
+    /**
      * Press the form submit button with the given text.
      *
      * @param  string $buttonText

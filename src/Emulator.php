@@ -113,6 +113,15 @@ interface Emulator
     public function select($element, $option);
 
     /**
+     * Attach a file to a form.
+     *
+     * @param  string $element
+     * @param  string $absolutePath
+     * @return static
+     */
+    public function attachFile($element, $absolutePath);
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table

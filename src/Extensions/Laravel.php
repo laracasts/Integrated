@@ -54,11 +54,13 @@ abstract class Laravel extends TestCase implements Emulator
      * @param  string $requestType
      * @param  string $uri
      * @param  array  $parameters
+     * @param  array  $cookies
+     * @param  array  $files
      * @return static
      */
-    protected function makeRequest($requestType, $uri, $parameters = [])
+    protected function makeRequest($requestType, $uri, $parameters = [], $cookies = [], $files = [])
     {
-        $this->call($requestType, $uri, $parameters);
+        $this->call($requestType, $uri, $parameters, $cookies, $files);
 
         $this->clearInputs()->followRedirects()->assertPageLoaded($uri);
 
@@ -95,7 +97,7 @@ abstract class Laravel extends TestCase implements Emulator
     protected function makeRequestUsingForm(Form $form)
     {
         return $this->makeRequest(
-            $form->getMethod(), $form->getUri(), $form->getValues()
+            $form->getMethod(), $form->getUri(), $form->getValues(), [], $form->getFiles()
         );
     }
 

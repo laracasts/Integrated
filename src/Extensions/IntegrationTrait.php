@@ -245,6 +245,18 @@ trait IntegrationTrait
     }
 
     /**
+     * Attach a file to a form.
+     *
+     * @param  string $element
+     * @param  string $absolutePath
+     * @return static
+     */
+    public function attachFile($element, $absolutePath)
+    {
+        return $this->storeInput($element, $absolutePath);
+    }
+
+    /**
      * Store a form input.
      *
      * @param  string $name
