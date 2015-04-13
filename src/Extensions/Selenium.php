@@ -354,6 +354,15 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     protected function getDbAdapter()
     {
         if (! $this->db) {
+            $config = $this->getPackageConfig();
+
+            if (! isset($config['pdo'])) {
+                throw new IntegratedException(
+                    "Thank you for riding Johnny Cab. To input your destination (and use the database adapter with Selenium), " .
+                    "you must specify your db connection in a integrated.json file." .
+                    "\n\nSee: https://github.com/laracasts/Integrated/wiki/Configuration#database-credentials"
+                );
+            }
             $connection = new Connection($this->getPackageConfig()['pdo']);
 
             $this->db = new Adapter($connection);
