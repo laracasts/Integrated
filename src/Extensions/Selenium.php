@@ -148,7 +148,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
             return $this->session->element('css selector', "{$element}[value='{$value}']");
         } catch (NoSuchElement $e) {
             try {
-                return $this->session->element('xpath', "//button[contains(text(),'Register')]");
+                return $this->session->element('xpath', "//button[contains(text(),'{$value}')]");
             } catch (NoSuchElement $e) {
                 throw new InvalidArgumentException(
                     "Crap. Couldn't find an {$element} with a 'value' attribute of '{$value}'. We also looked " .
