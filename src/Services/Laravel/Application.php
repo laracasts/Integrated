@@ -27,7 +27,7 @@ trait Application
     /**
      * Clean up the testing environment before the next test.
      *
-     * @XtearDown
+     * @tearDown
      * @return void
      */
     public function tearDownLaravel()
