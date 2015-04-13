@@ -9,6 +9,7 @@ use Laracasts\Integrated\Database\Connection;
 use Laracasts\Integrated\Database\Adapter;
 use WebDriver\Exception\NoSuchElement;
 use Laracasts\Integrated\Emulator;
+use WebDriver\Exception\CurlExec;
 use InvalidArgumentException;
 use WebDriver\WebDriver;
 use WebDriver\Element;
@@ -69,7 +70,15 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      */
     protected function makeRequest($requestType, $uri, $parameters = [])
     {
-        $this->session = $this->newSession()->open($uri);
+        try {
+            $this->session = $this->newSession()->open($uri);
+        } catch (CurlExec $e) {
+            throw new CurlExec(
+                "Hold on there, partner. Did you maybe forget to boot up Selenium? " .
+                "\n\njava -jar selenium-server-standalone-*.jar" .
+                "\n\n" . $e->getMessage()
+            );
+        }
 
         return $this;
     }
