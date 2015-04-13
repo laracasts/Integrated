@@ -67,7 +67,7 @@ abstract class Laravel extends TestCase implements Emulator
         // We'll set the current page again here, since it's possible
         // that the user was redirected.
 
-        $this->currentPage = $this->app['request']->url();
+        $this->currentPage = $this->app['request']->fullUrl();
 
         $this->crawler = new Crawler($this->content(), $this->currentPage);
 
