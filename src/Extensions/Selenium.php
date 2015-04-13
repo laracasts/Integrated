@@ -6,7 +6,6 @@ use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Laracasts\Integrated\JavaScriptAwareEmulator;
 use Laracasts\Integrated\IntegratedException;
 use Laracasts\Integrated\Database\Connection;
-use Illuminate\Foundation\Testing\TestCase;
 use Laracasts\Integrated\Database\Adapter;
 use WebDriver\Exception\NoSuchElement;
 use Laracasts\Integrated\Emulator;
