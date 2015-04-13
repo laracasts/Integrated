@@ -108,7 +108,7 @@ trait IntegrationTrait
                 "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
             );
 
-            $this->assertRegExp("/{$text}/i", $this->content(), $message);
+            $this->assertRegExp("/{$text}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
             $this->logLatestContent();
 
@@ -294,7 +294,7 @@ trait IntegrationTrait
     {
         $this->logLatestContent();
 
-        die(var_dump($this->content()));
+        die(var_dump($this->response()));
     }
 
     /**
@@ -466,7 +466,7 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $this->files()->put("tests/logs/output.txt", $this->content());
+        $this->files()->put("tests/logs/output.txt", $this->response());
     }
 
     /**

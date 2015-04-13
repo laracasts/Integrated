@@ -129,7 +129,7 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      *
      * @return string
      */
-    protected function content()
+    protected function response()
     {
         return (string) $this->client->getResponse();
     }

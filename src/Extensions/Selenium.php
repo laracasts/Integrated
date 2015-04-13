@@ -406,7 +406,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      *
      * @return string
      */
-    protected function content()
+    protected function response()
     {
         return $this->session->source();
     }
@@ -418,7 +418,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      */
     protected function statusCode()
     {
-        $response = $this->content();
+        $response = $this->response();
 
         // Todo: Temporary. What is the correct way to get the status code?
 
