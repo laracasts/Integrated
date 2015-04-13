@@ -41,7 +41,10 @@ class AnnotationReader
             }
         }
 
-        return $methods;
+        // We'll reverse the results to ensure that this package's
+        // hooks are called *before* the user's.
+
+        return array_reverse($methods);
     }
 
     /**
