@@ -352,6 +352,15 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      */
     protected function seeRowsWereReturned($table, $data)
     {
+        // If the user has imported the Laravel application trait, we can use Laravel to
+        // work with the database.
+
+        if (in_array('Laracasts\Integrated\Services\Laravel\Application', class_uses($this))) {
+            return $this->app['db']->table($table)->where($data)->count();
+        }
+
+        // Otherwise, we'll default to the database adapter that Integrated provides.
+
         return $this->getDbAdapter()->table($table)->whereExists($data);
     }
 
