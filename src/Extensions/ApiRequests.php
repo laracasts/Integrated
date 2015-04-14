@@ -159,8 +159,9 @@ trait ApiRequests
         $response = $this->response();
         $json = json_decode($response, true);
 
-        $this->assertNotEmpty(
+        $this->assertEquals(
             @array_intersect($json, $expected),
+            $expected,
             sprintf("Dang! Expected %s to exist in %s, but no dice. Any ideas?", json_encode($expected), $response)
         );
 
