@@ -151,7 +151,7 @@ trait ApiRequests
     /**
      * Assert that an API response matches the provided array.
      *
-     * @param  array|string $expected
+     * @param  array $expected
      * @return static
      */
     protected function seeJsonContains($expected)
