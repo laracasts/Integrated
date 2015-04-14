@@ -85,6 +85,28 @@ trait ApiRequests
     }
 
     /**
+     * Assert that the last response is JSON.
+     *
+     * @return static
+     */
+    protected function seeJson()
+    {
+        $this->assertJson($this->response());
+
+        return $this;
+    }
+
+    /**
+     * Alias for "seeJson" method.
+     *
+     * @return static
+     */
+    protected function seeIsJson()
+    {
+        return $this->seeJson();
+    }
+
+    /**
      * Assert that the status code equals the given code.
      *
      * @param  integer $code
