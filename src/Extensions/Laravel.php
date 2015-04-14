@@ -10,7 +10,7 @@ use Laracasts\Integrated\Emulator;
 
 abstract class Laravel extends TestCase implements Emulator
 {
-    use IntegrationTrait;
+    use IntegrationTrait, ApiRequests;
 
     /**
      * Enable method spoofing for HTML forms with a "_method" attribute.
