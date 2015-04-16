@@ -466,7 +466,7 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $this->files()->put("tests/logs/output.txt", $this->response());
+        $this->files()->put("tests/logs/output.html", $this->response());
     }
 
     /**
