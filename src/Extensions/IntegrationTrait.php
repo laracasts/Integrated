@@ -195,7 +195,7 @@ trait IntegrationTrait
      */
     public function type($text, $element)
     {
-        return $this->fill($text, $element);
+        return $this->storeInput($element, $text);
     }
 
     /**
@@ -207,7 +207,7 @@ trait IntegrationTrait
      */
     public function fill($text, $element)
     {
-        return $this->storeInput($element, $text);
+        return $this->type($text, $element);
     }
 
     /**
