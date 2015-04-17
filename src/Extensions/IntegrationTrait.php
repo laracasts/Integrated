@@ -558,6 +558,11 @@ trait IntegrationTrait
         throw new BadMethodCallException("The '{$method}' method does not exist.");
     }
 
+    /**
+     * Load configuration file.
+     *
+     * @return void
+     */
     protected function loadPreferredConfigFile()
     {
         if (file_exists('integrated.php')) {
