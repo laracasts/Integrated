@@ -50,7 +50,7 @@ trait IntegrationTrait
     /**
      * The location where the log file will be stored.
      *
-     * @var string
+     * @var string|null
      */
     protected $logFileLocation = "tests/logs/output.html";
 
