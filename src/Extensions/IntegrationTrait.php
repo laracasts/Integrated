@@ -48,6 +48,13 @@ trait IntegrationTrait
     protected $annotations;
 
     /**
+     * The location where the log file will be stored.
+     *
+     * @var string
+     */
+    protected $logFileLocation = "tests/logs/output.html";
+
+    /**
      * Prepare the test for PHPUnit.
      *
      * @return  void
@@ -466,7 +473,10 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $this->files()->put("tests/logs/output.html", $this->response());
+        if (empty($this->logFileLocation)) {
+            return;
+        }
+        $this->files()->put($this->logFileLocation, $this->response());
     }
 
     /**
