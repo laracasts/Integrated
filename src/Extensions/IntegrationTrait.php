@@ -100,6 +100,8 @@ trait IntegrationTrait
      *
      * @param  string $text
      * @return static
+     * @throws PHPUnitException
+     * @throws \Exception
      */
     public function see($text)
     {
@@ -476,12 +478,12 @@ trait IntegrationTrait
      */
     protected function getPackageConfig()
     {
-        if ( ! file_exists('integrated.json')) {
+        if ( ! file_exists('integrated.json') and ! file_exists('integrated.php')) {
             return [];
         }
 
         if (! $this->packageConfig) {
-            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+            $this->loadPreferredConfigFile();
         }
 
         return $this->packageConfig;
@@ -554,5 +556,15 @@ trait IntegrationTrait
         }
 
         throw new BadMethodCallException("The '{$method}' method does not exist.");
+    }
+
+    protected function loadPreferredConfigFile()
+    {
+        if (file_exists('integrated.php')) {
+            $this->packageConfig = require("integrated.php");
+        }
+        if (file_exists('integrated.json')) {
+            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        }
     }
 }
