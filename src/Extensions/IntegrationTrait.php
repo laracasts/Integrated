@@ -60,7 +60,18 @@ trait IntegrationTrait
             $this->getAnnotations()->having('setUp')
         );
     }
-
+    
+    /**
+     * Filter the DOM for the given css selector.
+     *
+     * @param  string $content
+     * @return static
+     */
+    public function filter($content)
+    {
+        return $this->crawler->filter($content);
+    }
+    
     /**
      * Make a GET request to the given uri.
      *
