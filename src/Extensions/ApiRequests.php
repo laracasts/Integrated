@@ -159,12 +159,33 @@ trait ApiRequests
         $response = $this->response();
         $json = json_decode($response, true);
 
-        $this->assertEquals(
-            @array_intersect($json, $expected),
-            $expected,
-            sprintf("Dang! Expected %s to exist in %s, but no dice. Any ideas?", json_encode($expected), $response)
-        );
+        // If we have a collection of results, we'll sift through each array
+        // in the collection, and check to see if there's a match.
+        if ( ! isset($json[0])) $json = [$json];
+
+        $containsFragment = array_reduce($json, function($carry, $array) use ($expected) {
+            if ($carry) return $carry;
+
+            return $this->jsonHasFragment($expected, $array);
+        });
+
+        $this->assertTrue($containsFragment, sprintf(
+            "Dang! Expected %s to exist in %s, but nope. Ideas?",
+            json_encode($expected), $response
+        ));
 
         return $this;
+    }
+
+    /**
+     * Determine if the given fragment is contained with a decoded set of JSON.
+     *
+     * @param  array $fragment
+     * @param  array $json
+     * @return boolean
+     */
+    protected function jsonHasFragment(array $fragment, $json)
+    {
+        return @array_intersect($json, $fragment) == $fragment;
     }
 }
