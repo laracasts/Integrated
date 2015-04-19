@@ -91,7 +91,9 @@ trait ApiRequests
      */
     protected function seeJson()
     {
-        $this->assertJson($this->response());
+        $response = $this->response();
+
+        $this->assertJson($response, "Failed asserting that the following response was JSON: {$response}");
 
         return $this;
     }
