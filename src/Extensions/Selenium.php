@@ -72,7 +72,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     {
         try {
             $this->session = $this->newSession()->open($uri);
-            $this->currentPage = $this->session->url();
+            $this->updateCurrentUrl();
         } catch (CurlExec $e) {
             throw new CurlExec(
                 "Hold on there, partner. Did you maybe forget to boot up Selenium? " .
