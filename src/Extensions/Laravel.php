@@ -69,7 +69,7 @@ abstract class Laravel extends TestCase implements Emulator
 
         $this->currentPage = $this->app['request']->fullUrl();
 
-        $this->crawler = new Crawler($this->response(), $this->currentPage);
+        $this->crawler = new Crawler($this->response(), $this->currentPage());
 
         return $this;
     }
@@ -142,7 +142,7 @@ abstract class Laravel extends TestCase implements Emulator
      */
     protected function handleInternalError($message = null)
     {
-        $crawler = new Crawler($this->response(), $this->currentPage);
+        $crawler = new Crawler($this->response(), $this->currentPage());
 
         // A little weird, but we need to parse the output HTML to
         // figure out the specifics of where the error occurred.

@@ -92,6 +92,8 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      */
     public function click($name)
     {
+        $page = $this->currentPage();
+
         try {
             $link = $this->findByBody($name)->click();
         } catch (InvalidArgumentException $e) {
@@ -101,9 +103,9 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
         $this->updateCurrentUrl();
 
         $this->assertPageLoaded(
-            $this->currentPage,
+            $page,
             "Successfully clicked on a link with a body, name, or class of '{$name}', " .
-            "but its destination, {$this->currentPage}, did not produce a 200 status code."
+            "but its destination, {$page}, did not produce a 200 status code."
         );
 
         return $this;

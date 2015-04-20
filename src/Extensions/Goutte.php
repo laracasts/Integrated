@@ -60,7 +60,7 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
 
         $this->currentPage = $this->client()->getHistory()->current()->getUri();
 
-        $this->clearInputs()->assertPageLoaded($this->currentPage);
+        $this->clearInputs()->assertPageLoaded($this->currentPage());
 
         return $this;
     }

@@ -89,10 +89,10 @@ trait IntegrationTrait
         }
 
         if (! Str::startsWith($url, 'http')) {
-            $url = rtrim(sprintf("%s/%s", $this->baseUrl(), $url), '/');
+            $url = sprintf("%s/%s", $this->baseUrl(), $url);
         }
 
-        return $url;
+        return trim($url, '/');
     }
 
     /**
@@ -130,7 +130,7 @@ trait IntegrationTrait
 
         $message = "Expected to be on the page, {$uri}, but wasn't.";
 
-        $this->assertEquals($uri, $this->currentPage, $message);
+        $this->assertEquals($uri, $this->currentPage(), $message);
 
         return $this;
     }
@@ -340,6 +340,16 @@ trait IntegrationTrait
                 "Couldn't find a form that contains a button with text '{$button}'."
             );
         }
+    }
+
+    /**
+     * Get the current URL for the request.
+     *
+     * @return string
+     */
+    protected function currentPage()
+    {
+        return rtrim($this->currentPage, '/');
     }
 
     /**
