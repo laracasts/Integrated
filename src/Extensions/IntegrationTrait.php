@@ -108,7 +108,7 @@ trait IntegrationTrait
                 "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
             );
 
-            $text = preg_quote($text);
+            $text = preg_quote($text, '/');
 
             $this->assertRegExp("/{$text}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
@@ -126,7 +126,7 @@ trait IntegrationTrait
      * @param  string $regex
      * @return static
      */
-    public function seeRegularExpression($regex)
+    public function seeRegEx($regex)
     {
         try {
             $message = sprintf(
