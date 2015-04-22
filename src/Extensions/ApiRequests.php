@@ -6,6 +6,13 @@ trait ApiRequests
 {
 
     /**
+     * User specified headers
+     *
+     * @var array headers
+     */
+    protected $headers = [];
+
+    /**
      * Make a GET request to an API endpoint.
      *
      * @param  string $uri
@@ -13,7 +20,7 @@ trait ApiRequests
      */
     protected function get($uri)
     {
-        $this->call('GET', $uri);
+        $this->call('GET', $uri, [], [], [], $this->headers);
 
         return $this;
     }
@@ -26,7 +33,7 @@ trait ApiRequests
      */
     protected function hit($uri)
     {
-        return $this->get($uri);
+        return $this->get($uri, [], [], [], $this->headers);
     }
 
     /**
@@ -38,7 +45,7 @@ trait ApiRequests
      */
     protected function post($uri, array $data)
     {
-        $this->call('POST', $uri, $data);
+        $this->call('POST', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -52,7 +59,7 @@ trait ApiRequests
      */
     protected function put($uri, array $data)
     {
-        $this->call('PUT', $uri, $data);
+        $this->call('PUT', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -66,7 +73,7 @@ trait ApiRequests
      */
     protected function patch($uri, array $data)
     {
-        $this->call('PATCH', $uri, $data);
+        $this->call('PATCH', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -79,7 +86,7 @@ trait ApiRequests
      */
     protected function delete($uri)
     {
-        $this->call('DELETE', $uri);
+        $this->call('DELETE', $uri, [], [], [], $this->headers);
 
         return $this;
     }
@@ -189,5 +196,31 @@ trait ApiRequests
     protected function jsonHasFragment(array $fragment, $json)
     {
         return @array_intersect($json, $fragment) == $fragment;
+    }
+
+    /**
+     * An array of headers to pass along with the request
+     *
+     * @param array $headers
+     * @return $this
+     */
+    protected function withHeaders(array $headers)
+    {
+        $clean = [];
+
+        // If 'HTTP_' is missing, prepend it
+        foreach ($headers as $key => $value)
+        {
+            if (strpos($key, 'HTTP_') !== 0)
+            {
+                $key = 'HTTP_' . $key;
+            }
+
+            $clean[$key] = $value;
+        }
+
+        $this->headers = $clean;
+
+        return $this;
     }
 }
