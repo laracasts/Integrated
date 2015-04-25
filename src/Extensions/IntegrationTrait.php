@@ -500,11 +500,11 @@ trait IntegrationTrait
      */
     protected function getPackageConfig()
     {
-        if ( ! file_exists('integrated.json') and ! file_exists('integrated.php')) {
+        if ( ! file_exists('integrated.json') && ! file_exists('integrated.php')) {
             return [];
         }
 
-        if (! $this->packageConfig) {
+        if ( ! $this->packageConfig) {
             $this->loadPreferredConfigFile();
         }
 
@@ -581,15 +581,16 @@ trait IntegrationTrait
     }
 
     /**
-     * Load configuration file.
+     * Load the configuration file.
      *
      * @return void
      */
     protected function loadPreferredConfigFile()
     {
         if (file_exists('integrated.php')) {
-            $this->packageConfig = require("integrated.php");
+            return $this->packageConfig = require('integrated.php');
         }
+
         if (file_exists('integrated.json')) {
             $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
         }
