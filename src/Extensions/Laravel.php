@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Laracasts\Integrated\Extensions\Traits\ApiRequests;
 use Illuminate\Foundation\Testing\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
