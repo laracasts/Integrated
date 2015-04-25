@@ -115,7 +115,32 @@ trait IntegrationTrait
                 "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
             );
 
+            $text = preg_quote($text, '/');
+
             $this->assertRegExp("/{$text}/i", $this->response(), $message);
+        } catch (PHPUnitException $e) {
+            $this->logLatestContent();
+
+            throw $e;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Search the DOM for the given regular expression.
+     *
+     * @param  string $regex
+     * @return static
+     */
+    public function seeRegEx($regex)
+    {
+        try {
+            $message = sprintf(
+                "Could not find regex '%s' on the page, '%s'.", $regex, $this->currentPage
+            );
+
+            $this->assertRegExp("/{$regex}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
             $this->logLatestContent();
 
