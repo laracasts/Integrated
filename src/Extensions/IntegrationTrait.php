@@ -104,28 +104,73 @@ trait IntegrationTrait
     }
 
     /**
-     * Search the DOM for the given text.
+     * Assert that the page contains the given text.
      *
-     * @param  string $text
+     * @param  string  $text
+     * @param  string  $message
+     * @param  boolean $negate
      * @return static
      * @throws PHPUnitException
-     * @throws \Exception
      */
-    public function see($text)
+    protected function assertSee($text, $message, $negate = false)
     {
         try {
-            $message = sprintf(
-                "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
-            );
-
             $text = preg_quote($text, '/');
+            $method = $negate ? 'assertNotRegExp' : 'assertRegExp';
 
-            $this->assertRegExp("/{$text}/i", $this->response(), $message);
+            $this->$method("/{$text}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
             $this->logLatestContent();
 
             throw $e;
         }
+
+        return $this;
+    }
+
+    /**
+     * Assert that the page contains the given text.
+     *
+     * @param  string $text
+     * @return static
+     * @throws PHPUnitException
+     */
+    public function see($text)
+    {
+        return $this->assertSee($text, sprintf(
+            "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
+        ));
+    }
+
+    /**
+     * Assert that the page does not contain the given text.
+     *
+     * @param  string $text
+     * @return static
+     * @throws PHPUnitException
+     */
+    public function notSee($text)
+    {
+        return $this->assertSee($text, sprintf(
+            "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
+        ), true);
+    }
+
+    /**
+     * Assert that the page URI matches the given uri.
+     *
+     * @param  string  $uri
+     * @param  message $message
+     * @param  boolean $negate
+     * @return static
+     */
+    public function assertPageIs($uri, $message, $negate = false)
+    {
+        $this->assertPageLoaded($uri = $this->prepareUrl($uri));
+
+        $method = $negate ? 'assertNotEquals' : 'assertEquals';
+
+        $this->$method($uri, $this->currentPage(), $message);
 
         return $this;
     }
@@ -138,13 +183,22 @@ trait IntegrationTrait
      */
     public function seePageIs($uri)
     {
-        $this->assertPageLoaded($uri = $this->prepareUrl($uri));
+        $this->assertPageIs(
+            $uri, "Expected to be on the page, {$uri}, but wasn't."
+        );
+    }
 
-        $message = "Expected to be on the page, {$uri}, but wasn't.";
-
-        $this->assertEquals($uri, $this->currentPage(), $message);
-
-        return $this;
+    /**
+     * Assert that the current page does match a given uri.
+     *
+     * @param  string $uri
+     * @return static
+     */
+    public function notSeePageIs($uri)
+    {
+        return $this->assertPageIs(
+            $uri, "Expected to NOT be on the page, {$uri}, but was.", true
+        );
     }
 
     /**
@@ -423,6 +477,38 @@ trait IntegrationTrait
     }
 
     /**
+     * Ensure that the given file does not exist.
+     *
+     * @param  string $path
+     * @return static
+     */
+    public function notSeeFile($path)
+    {
+        $this->assertFileNotExists($path);
+
+        return $this;
+    }
+
+    /**
+     * Assert that a record is contained in the database.
+     *
+     * @param  string  $table
+     * @param  array   $data
+     * @param  string  $message
+     * @param  boolean $negate
+     * @return static
+     */
+    public function assertInDatabase($table, array $data, $message, $negate = false)
+    {
+        $count = $this->seeRowsWereReturned($table, $data);
+        $method = $negate ? 'assertEquals' : 'assertGreaterThan';
+
+        $this->$method(0, $count, $message);
+
+        return $this;
+    }
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table
@@ -431,16 +517,25 @@ trait IntegrationTrait
      */
     public function seeInDatabase($table, array $data)
     {
-        $count = $this->seeRowsWereReturned($table, $data);
-
-        $message = sprintf(
+        return $this->assertInDatabase($table, $data, sprintf(
             "Didn't see row in the '%s' table that matched the attributes '%s'.",
             $table, json_encode($data)
-        );
+        ));
+    }
 
-        $this->assertGreaterThan(0, $count, $message);
-
-        return $this;
+    /**
+     * Ensure that a database table does not contain a row with the given data.
+     *
+     * @param  string $table
+     * @param  array  $data
+     * @return static
+     */
+    public function notSeeInDatabase($table, array $data)
+    {
+        return $this->assertInDatabase($table, $data, sprintf(
+            "Found row(s) in the '%s' table that matched the attributes '%s', but did not expect to.",
+            $table, json_encode($data)
+        ), true);
     }
 
     /**
@@ -453,6 +548,18 @@ trait IntegrationTrait
     public function verifyInDatabase($table, array $data)
     {
         return $this->seeInDatabase($table, $data);
+    }
+
+    /**
+     * Alias that defers to notSeeInDatabase.
+     *
+     * @param  string $table
+     * @param  array  $data
+     * @return static
+     */
+    public function notVerifyInDatabase($table, array $data)
+    {
+        return $this->notSeeInDatabase($table, $data);
     }
 
     /**
