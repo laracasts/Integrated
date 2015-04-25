@@ -128,29 +128,6 @@ trait IntegrationTrait
     }
 
     /**
-     * Search the DOM for the given regular expression.
-     *
-     * @param  string $regex
-     * @return static
-     */
-    public function seeRegEx($regex)
-    {
-        try {
-            $message = sprintf(
-                "Could not find regex '%s' on the page, '%s'.", $regex, $this->currentPage
-            );
-
-            $this->assertRegExp("/{$regex}/i", $this->response(), $message);
-        } catch (PHPUnitException $e) {
-            $this->logLatestContent();
-
-            throw $e;
-        }
-
-        return $this;
-    }
-
-    /**
      * Assert that the current page matches a uri.
      *
      * @param  string $uri
