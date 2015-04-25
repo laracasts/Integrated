@@ -2,6 +2,7 @@
 
 namespace Laracasts\Integrated\Extensions;
 
+use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
 use Laracasts\Integrated\Database\Connection;
 use Laracasts\Integrated\Database\Adapter;
 use Laracasts\Integrated\Emulator;
@@ -9,7 +10,7 @@ use Goutte\Client;
 
 abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
 {
-    use IntegrationTrait;
+    use IntegrationTrait, WorksWithDatabase;
 
     /**
      * The Goutte client instance.
@@ -17,13 +18,6 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      * @var Client
      */
     protected $client;
-
-    /**
-     * The database adapter instance.
-     *
-     * @var Adapter
-     */
-    protected $db;
 
     /**
      * Get the base url for all requests.
@@ -94,34 +88,6 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
         }
 
         return $this->client;
-    }
-
-    /**
-     * Get the number of rows that match the given condition.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @return integer
-     */
-    protected function seeRowsWereReturned($table, $data)
-    {
-        return $this->getDbAdapter()->table($table)->whereExists($data);
-    }
-
-    /**
-     * Get the adapter to the database.
-     *
-     * @return Adapter
-     */
-    protected function getDbAdapter()
-    {
-        if (! $this->db) {
-            $connection = new Connection($this->getPackageConfig()['pdo']);
-
-            $this->db = new Adapter($connection);
-        }
-
-        return $this->db;
     }
 
     /**

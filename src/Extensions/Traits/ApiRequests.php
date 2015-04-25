@@ -1,6 +1,6 @@
 <?php
 
-namespace Laracasts\Integrated\Extensions;
+namespace Laracasts\Integrated\Extensions\Traits;
 
 trait ApiRequests
 {

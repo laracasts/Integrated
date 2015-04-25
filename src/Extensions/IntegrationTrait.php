@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Laracasts\Integrated\IntegratedException;
 use Laracasts\Integrated\AnnotationReader;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\File;
@@ -46,6 +47,13 @@ trait IntegrationTrait
      * @var AnnotationReader
      */
     protected $annotations;
+
+    /**
+     * The location where the log file will be stored.
+     *
+     * @var string|null
+     */
+    protected $logFileLocation = "tests/logs/output.html";
 
     /**
      * Prepare the test for PHPUnit.
@@ -100,6 +108,8 @@ trait IntegrationTrait
      *
      * @param  string $text
      * @return static
+     * @throws PHPUnitException
+     * @throws \Exception
      */
     public function see($text)
     {
@@ -107,6 +117,8 @@ trait IntegrationTrait
             $message = sprintf(
                 "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
             );
+
+            $text = preg_quote($text, '/');
 
             $this->assertRegExp("/{$text}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
@@ -476,25 +488,55 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $this->files()->put("tests/logs/output.html", $this->response());
+        if (empty($this->logFileLocation)) {
+            return;
+        }
+        $this->files()->put($this->logFileLocation, $this->response());
     }
 
     /**
      * Fetch the user-provided package configuration.
      *
+     * @param  string|null $key
      * @return object
      */
-    protected function getPackageConfig()
+    protected function getPackageConfig($key = null)
     {
-        if ( ! file_exists('integrated.json')) {
+        if (! file_exists('integrated.json') && ! file_exists('integrated.php')) {
             return [];
         }
 
-        if (! $this->packageConfig) {
-            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        if ( ! $this->packageConfig) {
+            $this->loadPreferredConfigFile();
+        }
+
+        if ($key) {
+            if (! isset($this->packageConfig[$key])) {
+                throw new IntegratedException(
+                    "Hmm, did you set a '{$key}' key in your integrated.(json|php) file? Can't find it!"
+                );
+            }
+
+            return $this->packageConfig[$key];
         }
 
         return $this->packageConfig;
+    }
+
+    /**
+     * Load the configuration file.
+     *
+     * @return void
+     */
+    protected function loadPreferredConfigFile()
+    {
+        if (file_exists('integrated.php')) {
+            return $this->packageConfig = require('integrated.php');
+        }
+
+        if (file_exists('integrated.json')) {
+            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        }
     }
 
     /**
