@@ -2,15 +2,16 @@
 
 namespace Laracasts\Integrated\Extensions\Traits;
 
-use Laracasts\Integrated\Extensions\IntegrationTrait;
+use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
 use Laracasts\Integrated\Extensions\Traits\ApiRequests;
+use Laracasts\Integrated\Extensions\IntegrationTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 
 trait LaravelTestCase
 {
 
-    use IntegrationTrait, ApiRequests;
+    use IntegrationTrait, ApiRequests, WorksWithDatabase;
 
     /**
      * Enable method spoofing for HTML forms with a "_method" attribute.
@@ -99,18 +100,6 @@ trait LaravelTestCase
         return $this->makeRequest(
             $form->getMethod(), $form->getUri(), $form->getValues(), [], $form->getFiles()
         );
-    }
-
-    /**
-     * Get the number of rows that match the given condition.
-     *
-     * @param  string $table
-     * @param  array $data
-     * @return integer
-     */
-    protected function seeRowsWereReturned($table, $data)
-    {
-        return $this->app['db']->table($table)->where($data)->count();
     }
 
     /**

@@ -54,7 +54,7 @@ trait WorksWithDatabase
         // If the user has imported the Laravel application trait, we can use Laravel to
         // work with the database.
 
-        if (in_array('Laracasts\Integrated\Services\Laravel\Application', class_uses($this))) {
+        if (isset($this->app) || in_array('Laracasts\Integrated\Services\Laravel\Application', class_uses($this))) {
             return $this->app['db']->table($table)->where($data)->count();
         }
 
