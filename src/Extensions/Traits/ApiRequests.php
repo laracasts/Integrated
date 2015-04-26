@@ -163,6 +163,7 @@ trait ApiRequests
 
         // If we have a collection of results, we'll sift through each array
         // in the collection, and check to see if there's a match.
+
         if ( ! isset($json[0])) $json = [$json];
 
         $containsFragment = array_reduce($json, function($carry, $array) use ($expected) {
@@ -188,6 +189,44 @@ trait ApiRequests
      */
     protected function jsonHasFragment(array $fragment, $json)
     {
-        return @array_intersect($json, $fragment) == $fragment;
+        $hasMatch = @array_intersect($json, $fragment) == $fragment;
+
+        if ( ! $hasMatch) {
+            $hasMatch = $this->searchJsonFor($fragment, $json);
+        }
+
+        return $hasMatch;
+    }
+
+    /**
+     * Search through an associative array for a given fragment.
+     *
+     * @param  array $fragment
+     * @param  array $json
+     * @return boolean
+     */
+    protected function searchJsonFor($fragment, $json)
+    {
+        foreach ($json as $key => $value) {
+
+            // We'll do a handful of checks to see if the user's
+            // given array matches the JSON from the response.
+
+            if (is_array($value)) {
+                if ($this->searchJsonFor($fragment, $value)) {
+                    return true;
+                }
+
+                if (@array_intersect($value, $fragment) == $fragment) {
+                    return true;
+                }
+            }
+
+            if ($fragment == [$key => $value]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
