@@ -247,10 +247,10 @@ trait ApiRequests
     {
         $clean = [];
 
-        // If 'HTTP_' is missing, prepend it
+        // If 'HTTP_' is missing and this is not a content header, prepend HTTP_
         foreach ($headers as $key => $value)
         {
-            if (strpos($key, 'HTTP_') !== 0)
+            if (0 !== strpos($key, 'HTTP_') && 0 !== strpos($key, 'CONTENT_'))
             {
                 $key = 'HTTP_' . $key;
             }
