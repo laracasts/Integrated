@@ -183,7 +183,7 @@ trait IntegrationTrait
      */
     protected function seePageIs($uri)
     {
-        $this->assertPageIs(
+        return $this->assertPageIs(
             $uri, "Expected to be on the page, {$uri}, but wasn't."
         );
     }
