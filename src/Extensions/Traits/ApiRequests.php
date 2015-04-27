@@ -2,6 +2,8 @@
 
 namespace Laracasts\Integrated\Extensions\Traits;
 
+use Laracasts\Integrated\Str;
+
 trait ApiRequests
 {
 
@@ -250,7 +252,7 @@ trait ApiRequests
         // If 'HTTP_' is missing and this is not a content header, prepend HTTP_
         foreach ($headers as $key => $value)
         {
-            if (0 !== strpos($key, 'HTTP_') && 0 !== strpos($key, 'CONTENT_'))
+            if (!Str::startsWith($key, ['HTTP_', 'CONTENT_']))
             {
                 $key = 'HTTP_' . $key;
             }
