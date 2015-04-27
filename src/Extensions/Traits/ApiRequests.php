@@ -2,8 +2,17 @@
 
 namespace Laracasts\Integrated\Extensions\Traits;
 
+use Laracasts\Integrated\Str;
+
 trait ApiRequests
 {
+
+    /**
+     * User specified headers
+     *
+     * @var array headers
+     */
+    protected $headers = [];
 
     /**
      * Make a GET request to an API endpoint.
@@ -13,7 +22,7 @@ trait ApiRequests
      */
     protected function get($uri)
     {
-        $this->call('GET', $uri);
+        $this->call('GET', $uri, [], [], [], $this->headers);
 
         return $this;
     }
@@ -26,7 +35,7 @@ trait ApiRequests
      */
     protected function hit($uri)
     {
-        return $this->get($uri);
+        return $this->get($uri, [], [], [], $this->headers);
     }
 
     /**
@@ -38,7 +47,7 @@ trait ApiRequests
      */
     protected function post($uri, array $data)
     {
-        $this->call('POST', $uri, $data);
+        $this->call('POST', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -52,7 +61,7 @@ trait ApiRequests
      */
     protected function put($uri, array $data)
     {
-        $this->call('PUT', $uri, $data);
+        $this->call('PUT', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -66,7 +75,7 @@ trait ApiRequests
      */
     protected function patch($uri, array $data)
     {
-        $this->call('PATCH', $uri, $data);
+        $this->call('PATCH', $uri, $data, [], [], $this->headers);
 
         return $this;
     }
@@ -79,7 +88,7 @@ trait ApiRequests
      */
     protected function delete($uri)
     {
-        $this->call('DELETE', $uri);
+        $this->call('DELETE', $uri, [], [], [], $this->headers);
 
         return $this;
     }
@@ -228,5 +237,31 @@ trait ApiRequests
         }
 
         return false;
+    }
+
+    /**
+     * An array of headers to pass along with the request
+     *
+     * @param array $headers
+     * @return $this
+     */
+    protected function withHeaders(array $headers)
+    {
+        $clean = [];
+
+        // If 'HTTP_' is missing and this is not a content header, prepend HTTP_
+        foreach ($headers as $key => $value)
+        {
+            if (!Str::startsWith($key, ['HTTP_', 'CONTENT_']))
+            {
+                $key = 'HTTP_' . $key;
+            }
+
+            $clean[$key] = $value;
+        }
+
+        $this->headers = array_merge($this->headers, $clean);
+
+        return $this;
     }
 }
