@@ -8,7 +8,7 @@ trait ApiRequests
 {
 
     /**
-     * User specified headers
+     * User-specified headers.
      *
      * @var array headers
      */
@@ -35,7 +35,7 @@ trait ApiRequests
      */
     protected function hit($uri)
     {
-        return $this->get($uri, [], [], [], $this->headers);
+        return $this->get($uri);
     }
 
     /**
@@ -173,10 +173,14 @@ trait ApiRequests
         // If we have a collection of results, we'll sift through each array
         // in the collection, and check to see if there's a match.
 
-        if ( ! isset($json[0])) $json = [$json];
+        if (! isset($json[0])) {
+            $json = [$json];
+        }
 
-        $containsFragment = array_reduce($json, function($carry, $array) use ($expected) {
-            if ($carry) return $carry;
+        $containsFragment = array_reduce($json, function ($carry, $array) use ($expected) {
+            if ($carry) {
+                return $carry;
+            }
 
             return $this->jsonHasFragment($expected, $array);
         });
@@ -200,7 +204,7 @@ trait ApiRequests
     {
         $hasMatch = @array_intersect($json, $fragment) == $fragment;
 
-        if ( ! $hasMatch) {
+        if (! $hasMatch) {
             $hasMatch = $this->searchJsonFor($fragment, $json);
         }
 
@@ -249,11 +253,8 @@ trait ApiRequests
     {
         $clean = [];
 
-        // If 'HTTP_' is missing and this is not a content header, prepend HTTP_
-        foreach ($headers as $key => $value)
-        {
-            if (!Str::startsWith($key, ['HTTP_', 'CONTENT_']))
-            {
+        foreach ($headers as $key => $value) {
+            if (! Str::startsWith($key, ['HTTP_', 'CONTENT_'])) {
                 $key = 'HTTP_' . $key;
             }
 
