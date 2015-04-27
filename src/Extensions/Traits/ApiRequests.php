@@ -258,7 +258,7 @@ trait ApiRequests
             $clean[$key] = $value;
         }
 
-        $this->headers = $clean;
+        $this->headers = array_merge($this->headers, $clean);
 
         return $this;
     }
