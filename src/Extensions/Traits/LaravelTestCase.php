@@ -2,6 +2,7 @@
 
 namespace Laracasts\Integrated\Extensions\Traits;
 
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
 use Laracasts\Integrated\Extensions\Traits\ApiRequests;
 use Laracasts\Integrated\Extensions\IntegrationTrait;
