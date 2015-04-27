@@ -21,12 +21,28 @@ interface Emulator
     public function see($text);
 
     /**
-     * Convenience method that defers to onPage.
+     * Ensure that the DOM does not contain the given text.
+     *
+     * @param  string $text
+     * @return static
+     */
+    public function notSee($text);
+
+    /**
+     * Assert that the page uri is.
      *
      * @param  string $page
      * @return static
      */
     public function seePageIs($page);
+
+    /**
+     * Assert that the page uri does not match the given uri.
+     *
+     * @param  string $page
+     * @return static
+     */
+    public function notSeePageIs($page);
 
     /**
      * Assert that the current page is...
@@ -130,6 +146,14 @@ interface Emulator
     public function seeFile($path);
 
     /**
+     * Ensure that the given file does not exist.
+     *
+     * @param  string $path
+     * @return static
+     */
+    public function notSeeFile($path);
+
+    /**
      * Ensure that a database table contains a row with the given data.
      *
      * @param  string $table
@@ -139,6 +163,15 @@ interface Emulator
     public function seeInDatabase($table, array $data);
 
     /**
+     * Ensure that a database table does not contain a row with the given data.
+     *
+     * @param  string $table
+     * @param  array  $data
+     * @return static
+     */
+    public function notSeeInDatabase($table, array $data);
+
+    /**
      * Convenience method that defers to seeInDatabase.
      *
      * @param  string $table
@@ -146,6 +179,15 @@ interface Emulator
      * @return static
      */
     public function verifyInDatabase($table, array $data);
+
+    /**
+     * Convenience method that defers to notSeeInDatabase.
+     *
+     * @param  string $table
+     * @param  array $data
+     * @return static
+     */
+    public function notVerifyInDatabase($table, array $data);
 
     /**
      * Dump the response content from the last request to the console.

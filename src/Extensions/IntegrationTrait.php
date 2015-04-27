@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Laracasts\Integrated\IntegratedException;
 use Laracasts\Integrated\AnnotationReader;
 use Symfony\Component\DomCrawler\Form;
 use Laracasts\Integrated\File;
@@ -46,6 +47,13 @@ trait IntegrationTrait
      * @var AnnotationReader
      */
     protected $annotations;
+
+    /**
+     * The location where the log file will be stored.
+     *
+     * @var string|null
+     */
+    protected $logFileLocation = "tests/logs/output.html";
 
     /**
      * Prepare the test for PHPUnit.
@@ -96,19 +104,21 @@ trait IntegrationTrait
     }
 
     /**
-     * Search the DOM for the given text.
+     * Assert that the page contains the given text.
      *
-     * @param  string $text
+     * @param  string  $text
+     * @param  string  $message
+     * @param  boolean $negate
      * @return static
+     * @throws PHPUnitException
      */
-    public function see($text)
+    protected function assertSee($text, $message, $negate = false)
     {
         try {
-            $message = sprintf(
-                "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
-            );
+            $text = preg_quote($text, '/');
+            $method = $negate ? 'assertNotRegExp' : 'assertRegExp';
 
-            $this->assertRegExp("/{$text}/i", $this->response(), $message);
+            $this->$method("/{$text}/i", $this->response(), $message);
         } catch (PHPUnitException $e) {
             $this->logLatestContent();
 
@@ -119,20 +129,76 @@ trait IntegrationTrait
     }
 
     /**
+     * Assert that the page contains the given text.
+     *
+     * @param  string $text
+     * @return static
+     * @throws PHPUnitException
+     */
+    protected function see($text)
+    {
+        return $this->assertSee($text, sprintf(
+            "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
+        ));
+    }
+
+    /**
+     * Assert that the page does not contain the given text.
+     *
+     * @param  string $text
+     * @return static
+     * @throws PHPUnitException
+     */
+    protected function notSee($text)
+    {
+        return $this->assertSee($text, sprintf(
+            "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
+        ), true);
+    }
+
+    /**
+     * Assert that the page URI matches the given uri.
+     *
+     * @param  string  $uri
+     * @param  message $message
+     * @param  boolean $negate
+     * @return static
+     */
+    protected function assertPageIs($uri, $message, $negate = false)
+    {
+        $this->assertPageLoaded($uri = $this->prepareUrl($uri));
+
+        $method = $negate ? 'assertNotEquals' : 'assertEquals';
+
+        $this->$method($uri, $this->currentPage(), $message);
+
+        return $this;
+    }
+
+    /**
      * Assert that the current page matches a uri.
      *
      * @param  string $uri
      * @return static
      */
-    public function seePageIs($uri)
+    protected function seePageIs($uri)
     {
-        $this->assertPageLoaded($uri = $this->prepareUrl($uri));
+        $this->assertPageIs(
+            $uri, "Expected to be on the page, {$uri}, but wasn't."
+        );
+    }
 
-        $message = "Expected to be on the page, {$uri}, but wasn't.";
-
-        $this->assertEquals($uri, $this->currentPage(), $message);
-
-        return $this;
+    /**
+     * Assert that the current page does match a given uri.
+     *
+     * @param  string $uri
+     * @return static
+     */
+    protected function notSeePageIs($uri)
+    {
+        return $this->assertPageIs(
+            $uri, "Expected to NOT be on the page, {$uri}, but was.", true
+        );
     }
 
     /**
@@ -141,7 +207,7 @@ trait IntegrationTrait
      * @param  string $page
      * @return static
      */
-    public function onPage($page)
+    protected function onPage($page)
     {
         return $this->seePageIs($page);
     }
@@ -152,7 +218,7 @@ trait IntegrationTrait
      * @param  string $name
      * @return static
      */
-    public function click($name)
+    protected function click($name)
     {
         $link = $this->crawler->selectLink($name);
 
@@ -181,7 +247,7 @@ trait IntegrationTrait
      * @param  string $text
      * @return static
      */
-    public function follow($text)
+    protected function follow($text)
     {
         return $this->click($text);
     }
@@ -193,7 +259,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function type($text, $element)
+    protected function type($text, $element)
     {
         return $this->storeInput($element, $text);
     }
@@ -205,7 +271,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function fill($text, $element)
+    protected function fill($text, $element)
     {
         return $this->type($text, $element);
     }
@@ -216,7 +282,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function check($element)
+    protected function check($element)
     {
         return $this->storeInput($element, true);
     }
@@ -227,7 +293,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function tick($element)
+    protected function tick($element)
     {
         return $this->check($element);
     }
@@ -239,7 +305,7 @@ trait IntegrationTrait
      * @param  string $option
      * @return static
      */
-    public function select($element, $option)
+    protected function select($element, $option)
     {
         return $this->storeInput($element, $option);
     }
@@ -251,7 +317,7 @@ trait IntegrationTrait
      * @param  string $absolutePath
      * @return static
      */
-    public function attachFile($element, $absolutePath)
+    protected function attachFile($element, $absolutePath)
     {
         return $this->storeInput($element, $absolutePath);
     }
@@ -280,7 +346,7 @@ trait IntegrationTrait
      * @param  string $buttonText
      * @return static
      */
-    public function press($buttonText)
+    protected function press($buttonText)
     {
         return $this->submitForm($buttonText, $this->inputs);
     }
@@ -290,7 +356,7 @@ trait IntegrationTrait
      *
      * @return void
      */
-    public function dump()
+    protected function dump()
     {
         $this->logLatestContent();
 
@@ -403,9 +469,41 @@ trait IntegrationTrait
      * @param  string $path
      * @return static
      */
-    public function seeFile($path)
+    protected function seeFile($path)
     {
         $this->assertFileExists($path);
+
+        return $this;
+    }
+
+    /**
+     * Ensure that the given file does not exist.
+     *
+     * @param  string $path
+     * @return static
+     */
+    protected function notSeeFile($path)
+    {
+        $this->assertFileNotExists($path);
+
+        return $this;
+    }
+
+    /**
+     * Assert that a record is contained in the database.
+     *
+     * @param  string  $table
+     * @param  array   $data
+     * @param  string  $message
+     * @param  boolean $negate
+     * @return static
+     */
+    protected function assertInDatabase($table, array $data, $message, $negate = false)
+    {
+        $count = $this->seeRowsWereReturned($table, $data);
+        $method = $negate ? 'assertEquals' : 'assertGreaterThan';
+
+        $this->$method(0, $count, $message);
 
         return $this;
     }
@@ -417,18 +515,27 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    public function seeInDatabase($table, array $data)
+    protected function seeInDatabase($table, array $data)
     {
-        $count = $this->seeRowsWereReturned($table, $data);
-
-        $message = sprintf(
+        return $this->assertInDatabase($table, $data, sprintf(
             "Didn't see row in the '%s' table that matched the attributes '%s'.",
             $table, json_encode($data)
-        );
+        ));
+    }
 
-        $this->assertGreaterThan(0, $count, $message);
-
-        return $this;
+    /**
+     * Ensure that a database table does not contain a row with the given data.
+     *
+     * @param  string $table
+     * @param  array  $data
+     * @return static
+     */
+    protected function notSeeInDatabase($table, array $data)
+    {
+        return $this->assertInDatabase($table, $data, sprintf(
+            "Found row(s) in the '%s' table that matched the attributes '%s', but did not expect to.",
+            $table, json_encode($data)
+        ), true);
     }
 
     /**
@@ -438,9 +545,21 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    public function verifyInDatabase($table, array $data)
+    protected function verifyInDatabase($table, array $data)
     {
         return $this->seeInDatabase($table, $data);
+    }
+
+    /**
+     * Alias that defers to notSeeInDatabase.
+     *
+     * @param  string $table
+     * @param  array  $data
+     * @return static
+     */
+    protected function notVerifyInDatabase($table, array $data)
+    {
+        return $this->notSeeInDatabase($table, $data);
     }
 
     /**
@@ -476,25 +595,55 @@ trait IntegrationTrait
      */
     protected function logLatestContent()
     {
-        $this->files()->put("tests/logs/output.html", $this->response());
+        if (empty($this->logFileLocation)) {
+            return;
+        }
+        $this->files()->put($this->logFileLocation, $this->response());
     }
 
     /**
      * Fetch the user-provided package configuration.
      *
+     * @param  string|null $key
      * @return object
      */
-    protected function getPackageConfig()
+    protected function getPackageConfig($key = null)
     {
-        if ( ! file_exists('integrated.json')) {
+        if (! file_exists('integrated.json') && ! file_exists('integrated.php')) {
             return [];
         }
 
-        if (! $this->packageConfig) {
-            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        if ( ! $this->packageConfig) {
+            $this->loadPreferredConfigFile();
+        }
+
+        if ($key) {
+            if (! isset($this->packageConfig[$key])) {
+                throw new IntegratedException(
+                    "Hmm, did you set a '{$key}' key in your integrated.(json|php) file? Can't find it!"
+                );
+            }
+
+            return $this->packageConfig[$key];
         }
 
         return $this->packageConfig;
+    }
+
+    /**
+     * Load the configuration file.
+     *
+     * @return void
+     */
+    protected function loadPreferredConfigFile()
+    {
+        if (file_exists('integrated.php')) {
+            return $this->packageConfig = require('integrated.php');
+        }
+
+        if (file_exists('integrated.json')) {
+            $this->packageConfig = json_decode(file_get_contents('integrated.json'), true);
+        }
     }
 
     /**
@@ -516,7 +665,7 @@ trait IntegrationTrait
      *
      * @return File
      */
-    public function files()
+    protected function files()
     {
         return new File;
     }
