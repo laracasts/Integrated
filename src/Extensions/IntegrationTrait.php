@@ -651,7 +651,7 @@ trait IntegrationTrait
      *
      * @return AnnotationReader
      */
-    public function annotations()
+    protected function annotations()
     {
         if (! $this->annotations) {
             $this->annotations = new AnnotationReader($this);
