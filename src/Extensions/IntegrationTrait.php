@@ -691,7 +691,7 @@ trait IntegrationTrait
     public function tearDown()
     {
         $this->callMethods(
-            $this->getAnnotations()->having('tearDown')
+            array_reverse($this->getAnnotations()->having('tearDown'))
         );
     }
 
