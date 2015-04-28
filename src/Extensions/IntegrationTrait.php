@@ -65,7 +65,7 @@ trait IntegrationTrait
         parent::setUp();
 
         $this->callMethods(
-            $this->getAnnotations()->having('setUp')
+            $this->annotations()->having('setUp')
         );
     }
 
@@ -651,7 +651,7 @@ trait IntegrationTrait
      *
      * @return AnnotationReader
      */
-    public function getAnnotations()
+    public function annotations()
     {
         if (! $this->annotations) {
             $this->annotations = new AnnotationReader($this);
@@ -691,7 +691,7 @@ trait IntegrationTrait
     public function tearDown()
     {
         $this->callMethods(
-            $this->getAnnotations()->having('tearDown')
+            $this->annotations()->having('tearDown')
         );
     }
 
