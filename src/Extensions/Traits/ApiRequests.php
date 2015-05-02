@@ -86,7 +86,7 @@ trait ApiRequests
      * @param  string $uri
      * @return static
      */
-    protected function delete($uri, array $data)
+    protected function delete($uri, array $data = [])
     {
         $this->call('DELETE', $uri, $data, [], [], $this->headers);
 
