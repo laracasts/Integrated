@@ -167,80 +167,38 @@ trait ApiRequests
      */
     protected function seeJsonContains($expected)
     {
-        $response = $this->response();
-        $json = json_decode($response, true);
+        $response = json_decode($this->response(), true);
 
-        // If we have a collection of results, we'll sift through each array
-        // in the collection, and check to see if there's a match.
+        $this->sortJson($expected);
+        $this->sortJson($response);
 
-        if (! isset($json[0])) {
-            $json = [$json];
-        }
-
-        $containsFragment = array_reduce($json, function ($carry, $array) use ($expected) {
-            if ($carry) {
-                return $carry;
+        foreach ($expected as $key => $value) {
+            if ( ! str_contains(json_encode($response), trim(json_encode([$key => $value]), '{}'))) {
+                $this->fail(sprintf(
+                    "Dang! Expected %s to exist in %s, but nope. Ideas?",
+                    json_encode($expected), json_encode($response)
+                ));
             }
-
-            return $this->jsonHasFragment($expected, $array);
-        });
-
-        $this->assertTrue($containsFragment, sprintf(
-            "Dang! Expected %s to exist in %s, but nope. Ideas?",
-            json_encode($expected), $response
-        ));
-
-        return $this;
+        }
     }
 
     /**
-     * Determine if the given fragment is contained with a decoded set of JSON.
+     * Sort a JSON response, for easy assertions and comparisons.
      *
-     * @param  array $fragment
-     * @param  array $json
-     * @return boolean
+     * @param  array &$array
+     * @return array
      */
-    protected function jsonHasFragment(array $fragment, $json)
+    protected function sortJson(&$array)
     {
-        $hasMatch = @array_intersect($json, $fragment) == $fragment;
-
-        if (! $hasMatch) {
-            $hasMatch = $this->searchJsonFor($fragment, $json);
-        }
-
-        return $hasMatch;
-    }
-
-    /**
-     * Search through an associative array for a given fragment.
-     *
-     * @param  array $fragment
-     * @param  array $json
-     * @return boolean
-     */
-    protected function searchJsonFor($fragment, $json)
-    {
-        foreach ($json as $key => $value) {
-
-            // We'll do a handful of checks to see if the user's
-            // given array matches the JSON from the response.
-
-            if (is_array($value)) {
-                if ($this->searchJsonFor($fragment, $value)) {
-                    return true;
-                }
-
-                if (@array_intersect($value, $fragment) == $fragment) {
-                    return true;
-                }
-            }
-
-            if ($fragment == [$key => $value]) {
-                return true;
+        foreach ($array as &$value) {
+            if (is_array($value) && isset($value[0])) {
+                sort($value);
+            } elseif (is_array($value)) {
+                $this->sortJson($value);
             }
         }
 
-        return false;
+        return ksort($array);
     }
 
     /**
