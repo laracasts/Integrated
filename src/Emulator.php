@@ -26,7 +26,7 @@ interface Emulator
      * @param  string $text
      * @return static
      */
-    public function notSee($text);
+    public function dontSee($text);
 
     /**
      * Assert that the page uri is.
@@ -42,7 +42,7 @@ interface Emulator
      * @param  string $page
      * @return static
      */
-    public function notSeePageIs($page);
+    public function dontSeePageIs($page);
 
     /**
      * Assert that the current page is...
@@ -151,7 +151,7 @@ interface Emulator
      * @param  string $path
      * @return static
      */
-    public function notSeeFile($path);
+    public function dontSeeFile($path);
 
     /**
      * Ensure that a database table contains a row with the given data.
@@ -169,7 +169,7 @@ interface Emulator
      * @param  array  $data
      * @return static
      */
-    public function notSeeInDatabase($table, array $data);
+    public function dontSeeInDatabase($table, array $data);
 
     /**
      * Convenience method that defers to seeInDatabase.
@@ -181,13 +181,13 @@ interface Emulator
     public function verifyInDatabase($table, array $data);
 
     /**
-     * Convenience method that defers to notSeeInDatabase.
+     * Convenience method that defers to dontSeeInDatabase.
      *
      * @param  string $table
      * @param  array $data
      * @return static
      */
-    public function notVerifyInDatabase($table, array $data);
+    public function dontVerifyInDatabase($table, array $data);
 
     /**
      * Dump the response content from the last request to the console.

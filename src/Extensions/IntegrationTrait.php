@@ -149,7 +149,7 @@ trait IntegrationTrait
      * @return static
      * @throws PHPUnitException
      */
-    protected function notSee($text)
+    protected function dontSee($text)
     {
         return $this->assertSee($text, sprintf(
             "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
@@ -194,7 +194,7 @@ trait IntegrationTrait
      * @param  string $uri
      * @return static
      */
-    protected function notSeePageIs($uri)
+    protected function dontSeePageIs($uri)
     {
         return $this->assertPageIs(
             $uri, "Expected to NOT be on the page, {$uri}, but was.", true
@@ -482,7 +482,7 @@ trait IntegrationTrait
      * @param  string $path
      * @return static
      */
-    protected function notSeeFile($path)
+    protected function dontSeeFile($path)
     {
         $this->assertFileNotExists($path);
 
@@ -530,7 +530,7 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    protected function notSeeInDatabase($table, array $data)
+    protected function dontSeeInDatabase($table, array $data)
     {
         return $this->assertInDatabase($table, $data, sprintf(
             "Found row(s) in the '%s' table that matched the attributes '%s', but did not expect to.",
@@ -551,13 +551,13 @@ trait IntegrationTrait
     }
 
     /**
-     * Alias that defers to notSeeInDatabase.
+     * Alias that defers to dontSeeInDatabase.
      *
      * @param  string $table
      * @param  array  $data
      * @return static
      */
-    protected function notVerifyInDatabase($table, array $data)
+    protected function dontVerifyInDatabase($table, array $data)
     {
         return $this->notSeeInDatabase($table, $data);
     }
