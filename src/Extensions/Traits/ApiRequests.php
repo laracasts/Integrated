@@ -180,6 +180,8 @@ trait ApiRequests
                 ));
             }
         }
+        
+        return $this;
     }
 
     /**
