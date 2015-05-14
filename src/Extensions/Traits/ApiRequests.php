@@ -20,9 +20,9 @@ trait ApiRequests
      * @param  string $uri
      * @return static
      */
-    protected function get($uri)
+    protected function get($uri, array $params = array())
     {
-        $this->call('GET', $uri, [], [], [], $this->headers);
+        $this->call('GET', $uri, $params, [], [], $this->headers);
 
         return $this;
     }
