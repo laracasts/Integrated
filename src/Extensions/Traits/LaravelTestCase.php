@@ -99,7 +99,7 @@ trait LaravelTestCase
     protected function makeRequestUsingForm(Form $form)
     {
         return $this->makeRequest(
-            $form->getMethod(), $form->getUri(), $form->getValues(), [], $form->getFiles()
+            $form->getMethod(), $form->getUri(), $form->getPhpValues(), [], $form->getFiles()
         );
     }
 
