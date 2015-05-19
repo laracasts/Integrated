@@ -498,7 +498,7 @@ trait IntegrationTrait
      * @param  boolean $negate
      * @return static
      */
-    protected function assertInDatabase($table, array $data, $message, $negate = false)
+    public function assertInDatabase($table, array $data, $message, $negate = false)
     {
         $count = $this->seeRowsWereReturned($table, $data);
         $method = $negate ? 'assertEquals' : 'assertGreaterThan';
