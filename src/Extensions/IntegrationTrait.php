@@ -135,7 +135,7 @@ trait IntegrationTrait
      * @return static
      * @throws PHPUnitException
      */
-    protected function see($text)
+    public function see($text)
     {
         return $this->assertSee($text, sprintf(
             "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
@@ -149,7 +149,7 @@ trait IntegrationTrait
      * @return static
      * @throws PHPUnitException
      */
-    protected function notSee($text)
+    public function notSee($text)
     {
         return $this->assertSee($text, sprintf(
             "Could not find '%s' on the page, '%s'.", $text, $this->currentPage
@@ -164,7 +164,7 @@ trait IntegrationTrait
      * @param  boolean $negate
      * @return static
      */
-    protected function assertPageIs($uri, $message, $negate = false)
+    public function assertPageIs($uri, $message, $negate = false)
     {
         $this->assertPageLoaded($uri = $this->prepareUrl($uri));
 
@@ -181,7 +181,7 @@ trait IntegrationTrait
      * @param  string $uri
      * @return static
      */
-    protected function seePageIs($uri)
+    public function seePageIs($uri)
     {
         return $this->assertPageIs(
             $uri, "Expected to be on the page, {$uri}, but wasn't."
@@ -194,7 +194,7 @@ trait IntegrationTrait
      * @param  string $uri
      * @return static
      */
-    protected function notSeePageIs($uri)
+    public function notSeePageIs($uri)
     {
         return $this->assertPageIs(
             $uri, "Expected to NOT be on the page, {$uri}, but was.", true
@@ -207,7 +207,7 @@ trait IntegrationTrait
      * @param  string $page
      * @return static
      */
-    protected function onPage($page)
+    public function onPage($page)
     {
         return $this->seePageIs($page);
     }
@@ -218,7 +218,7 @@ trait IntegrationTrait
      * @param  string $name
      * @return static
      */
-    protected function click($name)
+    public function click($name)
     {
         $link = $this->crawler->selectLink($name);
 
@@ -247,7 +247,7 @@ trait IntegrationTrait
      * @param  string $text
      * @return static
      */
-    protected function follow($text)
+    public function follow($text)
     {
         return $this->click($text);
     }
@@ -259,7 +259,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    protected function type($text, $element)
+    public function type($text, $element)
     {
         return $this->storeInput($element, $text);
     }
@@ -271,7 +271,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    protected function fill($text, $element)
+    public function fill($text, $element)
     {
         return $this->type($text, $element);
     }
@@ -282,7 +282,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    protected function check($element)
+    public function check($element)
     {
         return $this->storeInput($element, true);
     }
@@ -293,7 +293,7 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    protected function tick($element)
+    public function tick($element)
     {
         return $this->check($element);
     }
@@ -305,7 +305,7 @@ trait IntegrationTrait
      * @param  string $option
      * @return static
      */
-    protected function select($element, $option)
+    public function select($element, $option)
     {
         return $this->storeInput($element, $option);
     }
@@ -317,7 +317,7 @@ trait IntegrationTrait
      * @param  string $absolutePath
      * @return static
      */
-    protected function attachFile($element, $absolutePath)
+    public function attachFile($element, $absolutePath)
     {
         return $this->storeInput($element, $absolutePath);
     }
@@ -346,7 +346,7 @@ trait IntegrationTrait
      * @param  string $buttonText
      * @return static
      */
-    protected function press($buttonText)
+    public function press($buttonText)
     {
         return $this->submitForm($buttonText, $this->inputs);
     }
@@ -356,7 +356,7 @@ trait IntegrationTrait
      *
      * @return void
      */
-    protected function dump()
+    public function dump()
     {
         $this->logLatestContent();
 
@@ -469,7 +469,7 @@ trait IntegrationTrait
      * @param  string $path
      * @return static
      */
-    protected function seeFile($path)
+    public function seeFile($path)
     {
         $this->assertFileExists($path);
 
@@ -482,7 +482,7 @@ trait IntegrationTrait
      * @param  string $path
      * @return static
      */
-    protected function notSeeFile($path)
+    public function notSeeFile($path)
     {
         $this->assertFileNotExists($path);
 
@@ -515,7 +515,7 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    protected function seeInDatabase($table, array $data)
+    public function seeInDatabase($table, array $data)
     {
         return $this->assertInDatabase($table, $data, sprintf(
             "Didn't see row in the '%s' table that matched the attributes '%s'.",
@@ -530,7 +530,7 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    protected function notSeeInDatabase($table, array $data)
+    public function notSeeInDatabase($table, array $data)
     {
         return $this->assertInDatabase($table, $data, sprintf(
             "Found row(s) in the '%s' table that matched the attributes '%s', but did not expect to.",
@@ -545,7 +545,7 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    protected function verifyInDatabase($table, array $data)
+    public function verifyInDatabase($table, array $data)
     {
         return $this->seeInDatabase($table, $data);
     }
@@ -557,7 +557,7 @@ trait IntegrationTrait
      * @param  array  $data
      * @return static
      */
-    protected function notVerifyInDatabase($table, array $data)
+    public function notVerifyInDatabase($table, array $data)
     {
         return $this->notSeeInDatabase($table, $data);
     }
