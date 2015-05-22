@@ -449,7 +449,9 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      */
     protected function newSession()
     {
-        $host = 'http://localhost:4444/wd/hub';
+        $config = $this->getPackageConfig();
+
+        $host = isset($config['selenium']['host'])) ? $config['selenium']['host'] : 'http://localhost:4444/wd/hub';
 
         $this->webDriver = new WebDriver($host);
         $capabilities = [];
