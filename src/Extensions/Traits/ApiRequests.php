@@ -13,7 +13,14 @@ trait ApiRequests
      * @var array headers
      */
     protected $headers = [];
-
+    
+    /**
+     * User-specified cookies.
+     *
+     * @var array cookies
+     */
+    protected $cookies = [];
+    
     /**
      * Make a GET request to an API endpoint.
      *
@@ -22,7 +29,7 @@ trait ApiRequests
      */
     protected function get($uri)
     {
-        $this->call('GET', $uri, [], [], [], $this->headers);
+        $this->call('GET', $uri, [], [], $this->cookies, $this->headers);
 
         return $this;
     }
@@ -47,7 +54,7 @@ trait ApiRequests
      */
     protected function post($uri, array $data)
     {
-        $this->call('POST', $uri, $data, [], [], $this->headers);
+        $this->call('POST', $uri, $data, $this->cookies, [], $this->headers);
 
         return $this;
     }
@@ -61,7 +68,7 @@ trait ApiRequests
      */
     protected function put($uri, array $data)
     {
-        $this->call('PUT', $uri, $data, [], [], $this->headers);
+        $this->call('PUT', $uri, $data, $this->cookies, [], $this->headers);
 
         return $this;
     }
@@ -75,7 +82,7 @@ trait ApiRequests
      */
     protected function patch($uri, array $data)
     {
-        $this->call('PATCH', $uri, $data, [], [], $this->headers);
+        $this->call('PATCH', $uri, $data, $this->cookies, [], $this->headers);
 
         return $this;
     }
@@ -88,7 +95,7 @@ trait ApiRequests
      */
     protected function delete($uri)
     {
-        $this->call('DELETE', $uri, [], [], [], $this->headers);
+        $this->call('DELETE', $uri, [], $this->cookies, [], $this->headers);
 
         return $this;
     }
@@ -222,6 +229,19 @@ trait ApiRequests
         }
 
         $this->headers = array_merge($this->headers, $clean);
+
+        return $this;
+    }
+    
+    /**
+     * An array of cookies to pass along with the request
+     *
+     * @param array $cookies
+     * @return $this
+     */
+    protected function withCookies(array $cookies)
+    {
+        $this->cookies = array_merge($this->cookies, $cookies);
 
         return $this;
     }
