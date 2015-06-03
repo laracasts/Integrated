@@ -10,6 +10,7 @@ use Laracasts\Integrated\File;
 use Laracasts\Integrated\Str;
 use InvalidArgumentException;
 use BadMethodCallException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait IntegrationTrait
 {
@@ -33,6 +34,13 @@ trait IntegrationTrait
      * @var array
      */
     protected $inputs = [];
+
+    /**
+     * User-filled form file uploads.
+     *
+     * @var array
+     */
+    protected $files = [];
 
     /**
      * The user-provided package configuration.
@@ -319,6 +327,9 @@ trait IntegrationTrait
      */
     public function attachFile($element, $absolutePath)
     {
+        $name = str_replace('#', '', $element);
+        $this->files[$name] = $absolutePath;
+
         return $this->storeInput($element, $absolutePath);
     }
 
@@ -570,6 +581,7 @@ trait IntegrationTrait
     protected function clearInputs()
     {
         $this->inputs = [];
+        $this->files = [];
 
         return $this;
     }
