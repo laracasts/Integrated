@@ -131,7 +131,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
         $name = str_replace('#', '', $name);
 
         try {
-            return $this->session->element('css selector', "#{$name}, *[name={$name}]");
+            return $this->session->element('css selector', "{$element}#{$name}, {$element}[name={$name}]");
         } catch (NoSuchElement $e) {
             throw new InvalidArgumentException(
                 "Couldn't find an element, '{$element}', with a name or class attribute of '{$name}'."
