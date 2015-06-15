@@ -99,6 +99,9 @@ class Adapter
     protected function execute($query)
     {
         $query->execute($this->bindings);
+        
+        $this->bindings = [];
+        $this->wheres   = [];
 
         return $query;
     }
