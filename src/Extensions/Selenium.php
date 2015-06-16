@@ -273,6 +273,35 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     }
 
     /**
+     * Fill in a prompt with the given text.
+     *
+     * @param  string  $text
+     * @param  boolean $accept
+     * @return
+     */
+    public function typeInPromt($text, $accept = true)
+    {
+        try {
+            $this->session->postAlert_text(['text' => $text]);
+        } catch (\WebDriver\Exception\NoAlertOpenError $e) {
+            throw new PHPUnitException(
+                "Could not see '{$text}' because no alert box was shown."
+            );
+        } catch (\WebDriver\Exception\UnknownError $e) {
+            // This would only apply to the PhantomJS driver.
+            // It seems to have issues with alerts, so I'm
+            // not sure what we can do about that...
+            return $this;
+        }
+
+        if ($accept) {
+            $this->acceptAlert();
+        }
+
+        return $this;
+    }
+
+    /**
      * Assert that an alert box is displayed, and contains the given text.
      *
      * @param  string  $text
