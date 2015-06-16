@@ -130,8 +130,14 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     {
         $name = str_replace('#', '', $name);
 
+        $selector = "{$element}[name='{$name}']";
+
+        if(!strpos($name, '[')) {
+            $selector = "{$element}#{$name}, " . $selector;
+        }
+
         try {
-            return $this->session->element('css selector', "#{$name}, *[name={$name}]");
+            return $this->session->element('css selector', $selector);
         } catch (NoSuchElement $e) {
             throw new InvalidArgumentException(
                 "Couldn't find an element, '{$element}', with a name or class attribute of '{$name}'."
@@ -202,7 +208,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     public function type($text, $element)
     {
         $value = ['value' => [$text]];
-        $this->findByNameOrId($element, $text)->postValue($value);
+        $this->findByNameOrId($element)->postValue($value);
 
         return $this;
     }
