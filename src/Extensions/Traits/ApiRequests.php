@@ -13,23 +13,24 @@ trait ApiRequests
      * @var array headers
      */
     protected $headers = [];
-    
+
     /**
      * User-specified cookies.
      *
      * @var array cookies
      */
     protected $cookies = [];
-    
+
     /**
      * Make a GET request to an API endpoint.
      *
      * @param  string $uri
+     * @param  array  $params
      * @return static
      */
-    protected function get($uri)
+    protected function get($uri, array $params = [])
     {
-        $this->call('GET', $uri, [], [], $this->cookies, $this->headers);
+        $this->call('GET', $uri, $params, [], $this->cookies, $this->headers);
 
         return $this;
     }
@@ -187,7 +188,7 @@ trait ApiRequests
                 ));
             }
         }
-        
+
         return $this;
     }
 
@@ -232,7 +233,7 @@ trait ApiRequests
 
         return $this;
     }
-    
+
     /**
      * An array of cookies to pass along with the request
      *
