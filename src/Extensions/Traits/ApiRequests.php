@@ -92,11 +92,12 @@ trait ApiRequests
      * Make a DELETE request to an API endpoint.
      *
      * @param  string $uri
+     * @param  array  $data
      * @return static
      */
-    protected function delete($uri)
+    protected function delete($uri, array $data = [])
     {
-        $this->call('DELETE', $uri, [], $this->cookies, [], $this->headers);
+        $this->call('DELETE', $uri, $data, $this->cookies, [], $this->headers);
 
         return $this;
     }
