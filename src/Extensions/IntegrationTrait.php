@@ -282,9 +282,20 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function check($element)
+    public function check($element, $toCheck = true)
     {
-        return $this->storeInput($element, true);
+        return $this->storeInput($element, $toCheck);
+    }
+
+    /**
+     * Uncheck a checkbox.
+     *
+     * @param  string $element
+     * @return static
+     */
+    public function uncheck($element)
+    {
+        return $this->check($element, false);
     }
 
     /**
@@ -293,9 +304,20 @@ trait IntegrationTrait
      * @param  string $element
      * @return static
      */
-    public function tick($element)
+    public function tick($element, $toCheck = true)
     {
-        return $this->check($element);
+        return $this->check($element, $toCheck);
+    }
+
+    /**
+     * Alias that defers to uncheck method.
+     *
+     * @param  string $element
+     * @return static
+     */
+    public function untick($element)
+    {
+        return $this->uncheck($element);
     }
 
     /**
