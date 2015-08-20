@@ -31,6 +31,11 @@ trait LaravelTestCase
      */
     public function baseUrl()
     {
+        if(isset($this->baseUrl))
+        {
+            return $this->baseUrl;
+        }
+        
         return "http://localhost";
     }
 
