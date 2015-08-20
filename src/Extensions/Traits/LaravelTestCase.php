@@ -8,6 +8,7 @@ use Laracasts\Integrated\Extensions\Traits\ApiRequests;
 use Laracasts\Integrated\Extensions\IntegrationTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait LaravelTestCase
 {
@@ -103,10 +104,13 @@ trait LaravelTestCase
      */
     protected function makeRequestUsingForm(Form $form)
     {
+        $formFiles = $this->convertFormFiles($form);
+
         return $this->makeRequest(
-            $form->getMethod(), $form->getUri(), $form->getPhpValues(), [], $form->getFiles()
+            $form->getMethod(), $form->getUri(), $form->getPhpValues(), [], $formFiles
         );
     }
+
 
     /**
      * Get the content from the reponse.
@@ -150,5 +154,28 @@ trait LaravelTestCase
         $message .= "\n\n{$exception} on {$location}";
 
         throw new PHPUnitException($message);
+    }
+
+    /**
+     * Converts form files to UploadedFile instances for testing
+     *
+     * @param Form $form
+     * @return array
+     */
+    protected function convertFormFiles(Form $form)
+    {
+        $formFiles = $form->getFiles();
+        $uploadedFiles = $this->files;
+
+        $names = array_keys($formFiles);
+
+        $formFiles = array_map(function (array $file, $name) use ($uploadedFiles) {
+            if (isset($uploadedFiles[$name])) {
+                $absolutePath = $uploadedFiles[$name];
+                $file = new UploadedFile($file['tmp_name'], basename($absolutePath), $file['type'], $file['size'], $file['error'], true);
+            }
+            return $file;
+        }, $formFiles, $names);
+        return array_combine($names, $formFiles);
     }
 }
