@@ -181,6 +181,8 @@ trait ApiRequests
             }
         }
         
+        $this->assertTrue(true);
+        
         return $this;
     }
 
