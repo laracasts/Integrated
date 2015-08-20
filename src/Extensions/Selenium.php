@@ -64,6 +64,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     protected function makeRequest($requestType, $uri, $parameters = [])
     {
         try {
+            $this->closeBrowser();
             $this->session = $this->newSession()->open($uri);
             $this->updateCurrentUrl();
         } catch (CurlExec $e) {
