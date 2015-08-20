@@ -3,6 +3,7 @@
 namespace Laracasts\Integrated\Extensions;
 
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
 use Laracasts\Integrated\JavaScriptAwareEmulator;
 use Laracasts\Integrated\IntegratedException;
 use Laracasts\Integrated\Database\Connection;
@@ -17,7 +18,7 @@ use WebDriver\Session;
 
 abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator, JavaScriptAwareEmulator
 {
-    use IntegrationTrait;
+    use IntegrationTrait, WorksWithDatabase;
 
     /**
      * The WebDriver instance.
