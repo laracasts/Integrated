@@ -2,17 +2,16 @@
 
 namespace Laracasts\Integrated\Extensions\Traits;
 
-use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
-use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
-use Laracasts\Integrated\Extensions\Traits\ApiRequests;
-use Laracasts\Integrated\Extensions\IntegrationTrait;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\DomCrawler\Crawler;
+use Laracasts\Integrated\Extensions\IntegrationTrait;
+use Laracasts\Integrated\Extensions\Traits\ApiRequests;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Laracasts\Integrated\Extensions\Traits\WorksWithDatabase;
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 
 trait LaravelTestCase
 {
-
     use IntegrationTrait, ApiRequests, WorksWithDatabase;
 
     /**
@@ -32,11 +31,10 @@ trait LaravelTestCase
      */
     public function baseUrl()
     {
-        if(isset($this->baseUrl))
-        {
+        if (isset($this->baseUrl)) {
             return $this->baseUrl;
         }
-        
+
         return "http://localhost";
     }
 
@@ -104,10 +102,10 @@ trait LaravelTestCase
      */
     protected function makeRequestUsingForm(Form $form)
     {
-        $formFiles = $this->convertFormFiles($form);
+        $files = $this->convertFormFiles($form);
 
         return $this->makeRequest(
-            $form->getMethod(), $form->getUri(), $form->getPhpValues(), [], $formFiles
+            $form->getMethod(), $form->getUri(), $form->getPhpValues(), [], $files
         );
     }
 
@@ -157,25 +155,33 @@ trait LaravelTestCase
     }
 
     /**
-     * Converts form files to UploadedFile instances for testing
+     * Converts form files to UploadedFile instances.
      *
-     * @param Form $form
+     * @param  Form $form
      * @return array
      */
     protected function convertFormFiles(Form $form)
     {
-        $formFiles = $form->getFiles();
-        $uploadedFiles = $this->files;
+        $files = $form->getFiles();
+        $names = array_keys($files);
 
-        $names = array_keys($formFiles);
+        $files = array_map(function ($file, $name) {
+            if (isset($this->files[$name])) {
+                $absolutePath = $this->files[$name];
 
-        $formFiles = array_map(function (array $file, $name) use ($uploadedFiles) {
-            if (isset($uploadedFiles[$name])) {
-                $absolutePath = $uploadedFiles[$name];
-                $file = new UploadedFile($file['tmp_name'], basename($absolutePath), $file['type'], $file['size'], $file['error'], true);
+                $file = new UploadedFile(
+                    $file['tmp_name'],
+                    basename($absolutePath),
+                    $file['type'],
+                    $file['size'],
+                    $file['error'],
+                    true
+                );
             }
+
             return $file;
-        }, $formFiles, $names);
-        return array_combine($names, $formFiles);
+        }, $files, $names);
+
+        return array_combine($names, $files);
     }
 }

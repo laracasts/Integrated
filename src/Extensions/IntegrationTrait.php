@@ -2,15 +2,15 @@
 
 namespace Laracasts\Integrated\Extensions;
 
-use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
-use Laracasts\Integrated\IntegratedException;
-use Laracasts\Integrated\AnnotationReader;
-use Symfony\Component\DomCrawler\Form;
-use Laracasts\Integrated\File;
-use Laracasts\Integrated\Str;
-use InvalidArgumentException;
 use BadMethodCallException;
+use InvalidArgumentException;
+use Laracasts\Integrated\Str;
+use Laracasts\Integrated\File;
+use Symfony\Component\DomCrawler\Form;
+use Laracasts\Integrated\AnnotationReader;
+use Laracasts\Integrated\IntegratedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 
 trait IntegrationTrait
 {
@@ -350,6 +350,7 @@ trait IntegrationTrait
     public function attachFile($element, $absolutePath)
     {
         $name = str_replace('#', '', $element);
+
         $this->files[$name] = $absolutePath;
 
         return $this->storeInput($element, $absolutePath);
