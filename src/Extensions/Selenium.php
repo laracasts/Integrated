@@ -236,13 +236,13 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     /**
      * Select an option from a dropdown.
      *
-     * @param  string $element
      * @param  string $option
+     * @param  string $element
      * @return static
      */
-    public function select($element, $option)
+    public function select($option, $element)
     {
-        $this->findByValue($option, 'option')->click();
+        $this->findByValue($option, "select[name=$element] > option")->click();
 
         return $this;
     }
