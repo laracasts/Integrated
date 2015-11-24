@@ -240,7 +240,7 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
      * @param  string $element
      * @return static
      */
-    public function select($option, $element)
+    public function select($element, $option)
     {
         $this->findByValue($option, "select[name=$element] > option")->click();
 
