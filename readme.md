@@ -1,3 +1,5 @@
+_Note: Much of Integrated [has been pulled into Laravel core](https://twitter.com/jeffrey_way/status/742479718516199424)._
+
 # Integrated
 
 Simple, intuitive integration testing with PHPUnit. For the projects where you're less interested in fancy tools and discussions with the business, and more concerned with just ensuring that the dang thing works. :)
