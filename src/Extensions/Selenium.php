@@ -92,7 +92,11 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
         try {
             $link = $this->findByBody($name)->click();
         } catch (InvalidArgumentException $e) {
-            $link = $this->findByNameOrId($name)->click();
+            try {
+                $link = $this->findByCss($name)->click();
+            } catch (InvalidArgumentException $e) {
+                $link = $this->findByNameOrId($name)->click();
+            }
         }
 
         $this->updateCurrentUrl();
@@ -141,6 +145,21 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
         }
     }
 
+    /**
+     * Filter according to an element's css attribute
+     * For example ->click('a[href^="/item/'.$item->slug.'"]')
+     *
+     * @param  string $selector
+     * @return Crawler
+     */
+    protected function findByCss($selector){
+        try{
+            return $this->session->element('css selector', $selector);
+        } catch (NoSuchElement $e) {
+            throw new InvalidArgumentException('No Css element exists.');
+        }
+    }
+    
     /**
      * Find an element by its "value" attribute.
      *
