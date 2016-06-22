@@ -24,7 +24,7 @@ class Str
     }
 
     /**
-     * Determine if a string is contains within another string.
+     * Determine if a string is contained within another string.
      *
      * @param  string $haystack
      * @param  string $needle
