@@ -48,7 +48,7 @@ abstract class Goutte extends \PHPUnit_Framework_TestCase implements Emulator
      */
     public function submitForm($buttonText, $formData = null)
     {
-        $this->client()->submit(
+        $this->crawler = $this->client()->submit(
             $this->fillForm($buttonText, $formData)
         );
 
