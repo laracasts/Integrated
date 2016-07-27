@@ -105,6 +105,46 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
 
         return $this;
     }
+    
+    /**
+     * Click all elements in a Collection using a variable as the variable
+     * eg. ->clickAll(Confirmations::all(), 'label[for={$1}]', 'slug')
+     * the Confirmation Model would have a slug field which populates 
+     * the <label for="{{ $confirmation->slug }}"> field
+     * 
+     * @param  Collection $elements
+     * @param  string $selector
+     * @param  string $variable
+     * @return static
+     */
+    public function clickAll($elements, $selector, $variable)
+    {
+        $page = $this->currentPage();
+
+        foreach($elements as $element)
+        {
+            $name = str_replace('{$1}', $element->{$variable}, $selector);
+            try {
+                $link = $this->findByBody($name)->click();
+            } catch (InvalidArgumentException $e) {
+                try {
+                    $link = $this->findByCss($name)->click();
+                } catch (InvalidArgumentException $e) {
+                    $link = $this->findByNameOrId($name)->click();
+                }
+            } 
+        }
+
+        $this->updateCurrentUrl();
+
+        $this->assertPageLoaded(
+            $page,
+            "Successfully clicked on a link with a body, name, or class of '{$name}', " .
+            "but its destination, {$page}, did not produce a 200 status code."
+        );
+
+        return $this;
+    }
 
     /**
      * Find an element by its text content.
