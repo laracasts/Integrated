@@ -221,6 +221,19 @@ trait IntegrationTrait
     }
 
     /**
+     * Sleep for given time and assert to see an element
+     * 
+     * @param string $text 
+     * @param integer $time (optional) 
+     * @return static
+     * @throws PHPUnitException
+     */
+    public function waitAndSee($text, $time = 3){
+        sleep($time); 
+        return $this->see($text); 
+    }
+
+    /**
      * Click a link with the given body.
      *
      * @param  string $name
