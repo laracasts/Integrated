@@ -456,9 +456,8 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
         $host = isset($config['selenium']['host']) ? $config['selenium']['host'] : 'http://localhost:4444/wd/hub';
 
         $this->webDriver = new WebDriver($host);
-        $capabilities = [];
 
-        return $this->session = $this->webDriver->session($this->getBrowserName(), $capabilities);
+        return $this->session = $this->webDriver->session($this->getBrowserName(), $this->getCapabilities());
     }
 
     /**
@@ -470,10 +469,26 @@ abstract class Selenium extends \PHPUnit_Framework_TestCase implements Emulator,
     {
         $config = $this->getPackageConfig();
 
-        if (isset($config['selenium'])) {
+        if (isset($config['selenium']) && isset($config['selenium']['browser'])) {
             return $config['selenium']['browser'];
         }
 
         return 'firefox';
+    }
+
+    /**
+     * Retrieve the desired capabilities for Selenium.
+     *
+     * @return array
+     */
+    protected function getCapabilities()
+    {
+        $config = $this->getPackageConfig();
+
+        if (isset($config['selenium']) && isset($config['selenium']['capabilities'])) {
+            return $config['selenium']['capabilities'];
+        }
+
+        return [];
     }
 }
