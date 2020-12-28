@@ -1,4 +1,4 @@
-_Note: Much of Integrated [has been pulled into Laravel core](https://twitter.com/jeffrey_way/status/742479718516199424)._
+_Note: Much of Integrated has been pulled into Laravel core._
 
 # Integrated
 
